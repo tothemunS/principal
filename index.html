@@ -596,30 +596,68 @@ function renderMarca(marca, productos){
   div.className = "brand-block";
   div.id = `brand-${marca}`;
 
-  let html = `<h3>${marca}</h3><div class="fraiche-products">`;
+  // 1️⃣ Separar SETS y PRODUCTOS
+  const sets = productos
+    .filter(p =>
+      p.categoria &&
+      p.categoria.toLowerCase().includes("set")
+    )
+    .sort((a,b) => b.precio - a.precio); // caro → barato
 
-productos
-  .filter(p => p.nombre && p.precio)
-  .forEach(p=>{
-    html += `
-      <div class="fraiche-product"
-        onclick="addToCart('${p.nombre}', ${p.precio})">
-        <img 
-  src="${imagenProductoAvon(p.nombre)}"
-  onerror="this.src='https://placehold.co/150x150?text=Avon'"
->
+  const normales = productos
+    .filter(p =>
+      !p.categoria ||
+      !p.categoria.toLowerCase().includes("set")
+    )
+    .sort((a,b) => a.nombre.localeCompare(b.nombre));
 
-        <p>
-          ${p.nombre}<br>
-          <b>$${p.precio}</b>
-        </p>
-      </div>
-    `;
-  });
+  let html = `<h3>${marca}</h3>`;
 
-  html += "</div>";
+  // ================= SETS =================
+  if(sets.length){
+    html += `<h4>🎁 Sets</h4><div class="fraiche-products">`;
+
+    sets.forEach(p=>{
+      html += `
+        <div class="fraiche-product"
+          onclick="addToCart('${p.nombre}', ${p.precio})">
+          <img 
+            src="${imagenProductoAvon(p.nombre)}"
+            onerror="this.src='https://placehold.co/150x150?text=Set+Avon'">
+          <p>
+            ${p.nombre}<br>
+            <b>$${p.precio}</b>
+          </p>
+        </div>
+      `;
+    });
+
+    html += `</div>`;
+  }
+
+  // ================= PRODUCTOS =================
+  if(normales.length){
+    html += `<h4>🛍️ Productos</h4><div class="fraiche-products">`;
+
+    normales.forEach(p=>{
+      html += `
+        <div class="fraiche-product"
+          onclick="addToCart('${p.nombre}', ${p.precio})">
+          <img 
+            src="${imagenProductoAvon(p.nombre)}"
+            onerror="this.src='https://placehold.co/150x150?text=Avon'">
+          <p>
+            ${p.nombre}<br>
+            <b>$${p.precio}</b>
+          </p>
+        </div>
+      `;
+    });
+
+    html += `</div>`;
+  }
+
   div.innerHTML = html;
-
   brandsSection.appendChild(div);
 }
 
