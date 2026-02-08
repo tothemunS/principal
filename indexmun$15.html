@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tienda Distribuidor</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial, Helvetica, sans-serif;
+  background:#f5f5f5;
+  overflow-x:hidden;
+  transition:background .3s, color .3s;
+}
+
+/* Botón para abrir menú */
+.menu-toggle{position:fixed;top:50%;left:0;transform:translateY(-50%);background:#111;color:#fff;padding:14px 10px;border-radius:0 12px 12px 0;cursor:pointer;z-index:1200}
+
+/* Menú lateral */
+.side-menu{
+position:fixed;top:50%;left:-120px;transform:translateY(-50%);
+width:110px;max-height:85vh;overflow-y:auto;
+background:rgba(255,255,255,.2);
+backdrop-filter:blur(12px);
+padding:12px 8px;border-radius:0 16px 16px 0;
+transition:.35s ease;z-index:1100;
+}
+.side-menu.open{left:0}
+
+/* Iconos de marcas */
+.side-menu img{
+width:80px;margin:10px auto;display:block;
+border-radius:10px;cursor:pointer;background:#fff;padding:6px
+}
+
+/* Botones del menú */
+.side-menu button{
+width:80px;height:48px;margin:10px auto;
+display:flex;align-items:center;justify-content:center;
+border:none;border-radius:10px;cursor:pointer;font-size:20px
+}
+
+/* ================= OVERLAY ================= */
+#overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  opacity:0;
+  pointer-events:none;
+  transition:.3s;
+  z-index:900;
+}
+#overlay.show{
+  opacity:1;
+  pointer-events:auto;
+}
+
+/* ================= CARRUSEL ================= */
+.carousel-wrapper{
+  width:100%;
+  height:520px;
+  perspective:1600px;
+  margin-top:40px;
+  position:relative;
+}
+
+#carousel{
+  width:100%;
+  height:100%;
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform-style:preserve-3d;
+  transform:translate(-50%,-50%) rotateY(0deg);
+  transition:transform 1.8s ease;
+}
+
+.carousel-item{
+  position:absolute;
+  width:200px;
+  height:260px;
+  left:50%;
+  top:50%;
+  transform-style:preserve-3d;
+  margin:-130px -100px;
+  border-radius:18px;
+  overflow:hidden;
+  background:#fff;
+  box-shadow:0 20px 40px rgba(0,0,0,.25);
+  cursor:pointer;
+}
+
+.carousel-item img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  background:#fff;
+}
+
+.carousel-info{
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  background:rgba(0,0,0,.7);
+  color:#fff;
+  padding:8px;
+  font-size:13px;
+  opacity:0;
+  transition:.3s;
+}
+.carousel-item:hover .carousel-info{opacity:1;}
+
+/* ================= FLECHAS ================= */
+.arrow{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:34px;
+  background:#000;
+  color:#fff;
+  padding:10px 14px;
+  border-radius:50%;
+  cursor:pointer;
+  z-index:5;
+  user-select:none;
+}
+#arrowLeft{left:20px;}
+#arrowRight{right:20px;}
+
+/* CONTADOR */
+.contador{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(255,255,255,0.15);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  padding:10px 18px;
+  border-radius:16px;
+  font-size:16px;
+  z-index:1001;
+  box-shadow:0 0 18px rgba(255,255,255,0.35);
+}
+#reloj{font-weight:bold;margin-left:6px;color:#e63946}
+.urgente{color:#ff9f1c;animation:blink 1s infinite alternate}
+@keyframes blink{from{opacity:1}to{opacity:.6}}
+
+/* ================= CARRITO ================= */
+#cartBtn{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  width:64px;
+  height:64px;
+  border-radius:50%;
+  background:#000;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:26px;
+  cursor:pointer;
+  z-index:1102;
+  box-shadow:0 0 16px rgba(255,255,255,.45);
+}
+
+#cartCount{
+  position:absolute;
+  top:-6px;
+  right:-6px;
+  background:red;
+  color:#fff;
+  font-size:12px;
+  border-radius:50%;
+  padding:4px 6px;
+}
+
+/* ================= CALENDARIO ================= */
+#calendarBox{
+  max-width:900px;
+  margin:40px auto;
+  background:#fff;
+  border-radius:16px;
+  padding:20px;
+  box-shadow:0 8px 20px rgba(0,0,0,.1);
+}
+
+#calendarBox table{
+  width:100%;
+  border-collapse:collapse;
+  text-align:center;
+}
+
+#calendarBox th,#calendarBox td{
+  padding:8px;
+  border-radius:8px;
+}
+
+#calendarBox td.today{
+  background:#000;
+  color:#fff;
+}
+
+/* ================= SECCIONES ================= */
+.section{
+  padding:40px 20px;
+  max-width:1000px;
+  margin:auto;
+}
+
+.brand-block{
+  background:#fff;
+  border-radius:14px;
+  padding:20px;
+  margin-bottom:20px;
+  box-shadow:0 8px 20px rgba(0,0,0,.1);
+}
+
+/* ================= DARK MODE ================= */
+.dark{
+  background:#111;
+  color:#eee;
+}
+
+.dark .brand-block,
+.dark #calendarBox{
+  background:#1e1e1e;
+  color:#eee;
+}
+
+.dark .carousel-item{
+  background:#1e1e1e;
+}
+
+.fraiche-products{
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+  margin-top:15px;
+}
+
+.fraiche-product{
+  width:140px;
+  text-align:center;
+}
+
+.fraiche-product img{
+  width:100%;
+  border-radius:10px;
+  background:#fff;
+  padding:6px;
+}
+
+.fraiche-product{
+  cursor:pointer;
+}
+
+.fraiche-product:hover{
+  transform:scale(1.05);
+  transition:.25s;
+}
+
+
+
+</style>
+</head>
+
+<body>
+
+<div id="overlay"></div>
+
+<!-- MENU LATERAL -->
+<div class="menu-toggle" onclick="toggleMenu()">➤</div>
+
+<!-- =========================
+[SECCIÓN 4 — MENÚ LATERAL DE MARCAS]
+AQUÍ VAN LOS ICONOS QUE ME PEDISTE
+========================= -->
+<div class="side-menu" id="sideMenu">
+
+<!-- ICONOS DE MARCAS -->
+<img src="logos/logoslogo-arabela.png" onclick="scrollToBrand('Arabela')">
+<img src="logos/logo-avon.png" onclick="scrollToBrand('Avon')">
+<img src="logos/logo-betterware.png" onclick="scrollToBrand('Betterware')">
+<img src="logos/logo-cyzone.png" onclick="scrollToBrand('Cyzone')">
+<img src="logos/logo-esika.png" onclick="scrollToBrand('Ésika')">
+<img src="logos/logo-fuller.png" onclick="scrollToBrand('Fuller')">
+<img src="logos/logo-fraiche.png" onclick="scrollToBrand('fraiche')">
+<img src="logos/logo-jafra.png" onclick="scrollToBrand('Jafra')">
+<img src="logos/logo-lbel.png" onclick="scrollToBrand(`L'Bel`)">
+<img src="logos/logo-marykay.png" onclick="scrollToBrand('Mary Kay')">
+<img src="logos/logo-natura.png" onclick="scrollToBrand('Natura')">
+<img src="logos/logo-shelo.png" onclick="scrollToBrand('Sheló Nabel')">
+<img src="logos/logo-terramar.png" onclick="scrollToBrand('Terramar')">
+<img src="logos/logo-tupperware.png" onclick="scrollToBrand('Tupperware')">
+<img src="logos/logo-unauthorized.png" onclick="scrollToBrand('Unauthorized Originals')">
+<img src="logos/logo-yves.png" onclick="scrollToBrand('Yves Rocher')">
+
+<!-- BOTONES EXTRA -->
+<button onclick="toggleDark()">🌙</button>
+<button onclick="abrirWhatsApp()">💬</button>
+
+</div>
+
+
+<!-- CARRITO -->
+<div id="cartBtn" onclick="openWhatsApp()">🛒<div id="cartCount">0</div></div>
+
+<!-- CARRUSEL -->
+<div class="carousel-wrapper">
+<div id="arrowLeft" class="arrow">❮</div>
+<div id="arrowRight" class="arrow">❯</div>
+<div id="carousel"></div>
+</div>
+
+<!-- CONTADOR -->
+<div class="contador">⏳ Cierre en <span id="reloj"></span></div>
+
+<!-- CALENDARIO -->
+<div id="calendarBox"></div>
+
+<!-- MARCAS / CATALOGOS -->
+<div class="section" id="brandsSection"></div>
+
+<script>
+
+/* ================= MENU ================= */
+const brands=[
+"Arabela","Avon","Betterware","Cyzone","Ésika","Fuller", "fraiche", 
+"Jafra","L'Bel","Mary Kay","Natura","Sheló Nabel",
+"Terramar","Tupperware",
+"Unauthorized Originals","Yves Rocher"
+].sort();
+
+const sideMenu=document.getElementById("sideMenu");
+const overlay=document.getElementById("overlay");
+
+function toggleMenu(){
+  sideMenu.classList.toggle("open");
+  overlay.classList.toggle("show");
+}
+overlay.onclick=toggleMenu;
+
+/* ================= DARK MODE ================= */
+function toggleDark(){
+ document.body.classList.toggle("dark");
+}
+
+/* ================= BOTON WHATSAPP MENU ================= */
+function abrirWhatsApp(){
+
+ const numero = "525632753493"; // ← TU NUMERO
+
+ const mensaje = encodeURIComponent(
+   "Hola, vengo de tu tienda y quiero información de productos."
+ );
+
+ window.open(
+   `https://wa.me/${numero}?text=${mensaje}`,
+   "_blank"
+ );
+}
+
+
+
+/* ================= PRODUCTOS CARRUSEL ================= */
+const products=[
+{n:"Aromatizante Fraiche Telas",p:179,img:"carrusel/aromatizante-telas.jpg"},
+{n:"Perfume Fraiche 10 ml",p:59,img:"carrusel/perfume10ml.jpg"},
+{n:"Perfume Fraiche 60 ml",p:299,img:"carrusel/perfume60ml.jpg"},
+{n:"Preventa 2",p:159,img:"prod4.jpg"},
+{n:"Top 5",p:189,img:"prod5.jpg"},
+{n:"Top 6",p:210,img:"prod6.jpg"},
+{n:"Top 7",p:275,img:"prod7.jpg"},
+{n:"Top 8",p:320,img:"prod8.jpg"},
+{n:"Top 9",p:410,img:"prod9.jpg"},
+{n:"Top 10",p:520,img:"prod10.jpg"}
+];
+
+const carousel=document.getElementById('carousel');
+products.forEach(prod=>{
+  const d=document.createElement('div');
+  d.className='carousel-item';
+  d.dataset.name=prod.n;
+  d.dataset.price=prod.p;
+  d.innerHTML=`<img src="${prod.img}"><div class='carousel-info'>${prod.n}<br>$${prod.p}</div>`;
+  carousel.appendChild(d);
+});
+
+const items=document.querySelectorAll('.carousel-item');
+const STEP=360/items.length;
+const RADIUS=820;
+let angle=0;
+
+items.forEach((item,i)=>{
+  const theta=STEP*i;
+  item.style.transform=`rotateY(${theta}deg) translateZ(${RADIUS}px)`;
+  item.onclick=()=>addToCart(item.dataset.name,item.dataset.price);
+});
+
+function rotate(){carousel.style.transform=`translate(-50%,-50%) rotateY(${angle}deg)`;}
+function next(){angle+=STEP;rotate();}
+function prev(){angle-=STEP;rotate();}
+
+document.getElementById("arrowLeft").onclick=()=>{stop();prev();start();}
+document.getElementById("arrowRight").onclick=()=>{stop();next();start();}
+
+let auto;
+function start(){stop();auto=setInterval(next,11000);} 
+function stop(){clearInterval(auto);} 
+rotate();
+start();
+
+/* ================= MAS VENDIDOS ================= */
+function obtenerMasVendidos(top = 10){
+  return Object.entries(ventasGlobales)
+    .sort((a,b)=>b[1]-a[1])
+    .slice(0,top);
+}
+
+
+function ordenarCarruselPorPopularidad(){
+
+  const itemsArray = [...carousel.children];
+
+  itemsArray.sort((a,b)=>{
+    const pa = ventasGlobales[a.dataset.name] || 0;
+const pb = ventasGlobales[b.dataset.name] || 0;
+    return pb - pa;
+  });
+
+  carousel.innerHTML = "";
+
+  itemsArray.forEach((item,i)=>{
+    const theta = STEP * i;
+    item.style.transform =
+      `rotateY(${theta}deg) translateZ(${RADIUS}px)`;
+    carousel.appendChild(item);
+  });
+
+  angle = 0;
+  rotate();
+}
+
+
+/* ================= CARRITO ================= */
+let cart=[]; 
+let ventasGlobales = JSON.parse(
+  localStorage.getItem("ventasGlobales")
+) || {}; let popularidad = {};
+function addToCart(n,p){
+
+  cart.push({n,p});
+  updateCart();
+
+  // 🔥 estadísticas reales
+  ventasGlobales[n] = (ventasGlobales[n] || 0) + 1;
+
+  localStorage.setItem(
+    "ventasGlobales",
+    JSON.stringify(ventasGlobales)
+  );
+
+  ordenarCarruselPorPopularidad(); // actualiza el carrusel
+}
+
+
+function updateCart(){document.getElementById('cartCount').innerText=cart.length;}
+function openWhatsApp(){
+
+ const numero = "525632753493"; // ← TU NUMERO AQUI
+
+ let total = cart.reduce((s,i)=>s+Number(i.p),0);
+
+ let txt = cart.map(i =>
+   `• ${i.n} — $${i.p}`
+ ).join('%0A');
+
+ const mensaje =
+ `Pedido desde tienda:%0A%0A${txt}%0A%0ATotal: $${total}`;
+
+ window.open(
+   `https://wa.me/${numero}?text=${mensaje}`,
+   '_blank'
+ );
+}
+
+
+/* CONTADOR */
+function nextWednesday(){
+ let d=new Date();
+ let add=(3-d.getDay()+7)%7||7;
+ d.setDate(d.getDate()+add);
+ d.setHours(0,0,0,0);
+ return d;
+}
+
+let end=nextWednesday();
+
+setInterval(()=>{
+ let diff=end-new Date();
+ if(diff<=0){
+   reloj.textContent='Cerrado';
+   return;
+ }
+
+ const dias = Math.floor(diff / 86400000);
+ const horas = Math.floor(diff / 3600000) % 24;
+ const mins  = Math.floor(diff / 60000) % 60;
+ const segs  = Math.floor(diff / 1000) % 60;
+
+ reloj.textContent =
+   `${dias}d ${horas}h ${mins}m ${segs}s`;
+
+ if(diff < 86400000)
+   reloj.classList.add('urgente');
+
+},1000);
+
+
+/* ================= CALENDARIO SIMPLE ================= */
+function buildCalendar(){
+ const box=document.getElementById('calendarBox');
+ const now=new Date();
+ const y=now.getFullYear();
+ const m=now.getMonth();
+ const first=new Date(y,m,1).getDay();
+ const days=new Date(y,m+1,0).getDate();
+ let html=`<h3>Calendario</h3><table><tr>`;
+ const wd=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+ wd.forEach(d=>html+=`<th>${d}</th>`);
+ html+='</tr><tr>';
+ for(let i=0;i<first;i++) html+='<td></td>';
+ for(let d=1;d<=days;d++){
+   const today=(d===now.getDate())?'today':'';
+   html+=`<td class='${today}'>${d}</td>`;
+   if((first+d)%7===0) html+='</tr><tr>';
+ }
+ html+='</tr></table>';
+ box.innerHTML=html;
+}
+buildCalendar();
+
+/* ================= GOOGLE SHEETS ================= */
+
+const sheetsCatalogos = {
+  "Avon": {
+    url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRmbZ6Mfu9C6tSid4SMsCGQW6d__VIUYWtbxevGVMz8qcR1tOemsPTHvTSxA3z2AE7iO3rWRce2TuGA/pub?gid=1815705184&single=true&output=csv"
+  }
+};
+
+async function cargarCSV(url){
+  const res = await fetch(url);
+  const text = await res.text();
+
+  const lines = text.trim().split("\n");
+  const headers = lines[0]
+    .split(",")
+    .map(h => h.trim().toLowerCase());
+
+  return lines.slice(1).map(line => {
+    const values = line.split(",").map(v => v.trim());
+
+    const row = {};
+    headers.forEach((h, i) => row[h] = values[i] || "");
+
+    // 💰 convertir precio con centavos
+    const precioCentavos = parseInt(
+      row.precio.replace(/[^\d]/g, ""),
+      10
+    );
+
+    return {
+      marca: row.marca,
+      codigo: row.codigo,
+      nombre: row.nombre,
+      precio: isNaN(precioCentavos)
+        ? 0
+        : precioCentavos / 100,
+      categoria: row.categoria
+    };
+  }).filter(p => p.nombre && p.precio > 0);
+}
+
+function renderMarca(marca, productos){
+  const div = document.createElement("div");
+  div.className = "brand-block";
+  div.id = `brand-${marca}`;
+
+  let html = `<h3>${marca}</h3><div class="fraiche-products">`;
+
+productos
+  .filter(p => p.nombre && p.precio)
+  .forEach(p=>{
+    html += `
+      <div class="fraiche-product"
+        onclick="addToCart('${p.nombre}', ${p.precio})">
+        <img src="https://via.placeholder.com/150?text=${encodeURIComponent(p.nombre)}">
+        <p>
+          ${p.nombre}<br>
+          <b>$${p.precio}</b>
+        </p>
+      </div>
+    `;
+  });
+
+  html += "</div>";
+  div.innerHTML = html;
+
+  brandsSection.appendChild(div);
+}
+
+async function cargarCatalogos(){
+  for(const marca in sheetsCatalogos){
+    const { url } = sheetsCatalogos[marca];
+
+    const productos = await cargarCSV(url);
+
+
+    // 👇 AQUÍ VA EL ARREGLO 4
+    console.log("Cargando:", marca, productos.length);
+
+    productos.sort((a,b)=>
+      a.nombre.localeCompare(b.nombre)
+    );
+
+    renderMarca(marca, productos);
+  }
+}
+
+
+
+/* ================= CATALOGOS ================= */
+const catalogos = {
+ "Arabela": "arabela.pdf",
+ "Avon": "avon.pdf",
+ "Betterware": "betterware.pdf",
+ "Cyzone": "cyzone.pdf",
+ "Ésika": "esika.pdf",
+ "Fuller": "fuller.pdf",
+ "Jafra": "jafra.pdf",
+ "L'Bel": "lbel.pdf",
+ "Mary Kay": "marykay.pdf",
+ "Natura": "natura.pdf",
+ "Sheló Nabel": "shelo.pdf",
+ "Terramar": "terramar.pdf",
+ "Tupperware": "tupperware.pdf",
+ "Unauthorized Originals": "unauthorized.pdf",
+ "Yves Rocher": "yves.pdf"
+};
+
+
+const brandsSection=document.getElementById('brandsSection');
+
+const marcasDinamicas = Object.keys(sheetsCatalogos);
+
+
+brands.forEach(b=>{
+  if(marcasDinamicas.includes(b)) return;
+
+ const div=document.createElement('div');
+ div.className='brand-block';
+ div.id=`brand-${b}`;
+
+ const pdf = catalogos[b] || "#";
+
+ let extra = "";
+
+if(b === "fraiche"){
+ extra = `
+ <div class="fraiche-products">
+
+   <div class="fraiche-product" onclick="addToCart('Aromatizante Fraiche Telas',179)">
+     <img src="fraiche/aromatizante-telas.jpg">
+     <p>Aromatizante telas<br><b>$179</b></p>
+   </div>
+
+   <div class="fraiche-product" onclick="addToCart('Perfume Fraiche 10 ml',59)">
+     <img src="fraiche/perfume10ml.jpg">
+     <p>Perfume 10 ml<br><b>$59</b></p>
+   </div>
+
+   <div class="fraiche-product" onclick="addToCart('Perfume Fraiche 32 ml',169)">
+     <img src="fraiche/perfume32ml.jpg">
+     <p>Perfume 32 ml<br><b>$169</b></p>
+   </div>
+
+   <div class="fraiche-product" onclick="addToCart('Perfume Fraiche 60 ml',299)">
+     <img src="fraiche/perfume60ml.jpg">
+     <p>Perfume 60 ml<br><b>$299</b></p>
+   </div>
+
+   <div class="fraiche-product" onclick="addToCart('Perfume Fraiche Neeche',759)">
+     <img src="fraiche/perfumeneeche.jpg">
+     <p>Perfume Neeche<br><b>$759</b></p>
+   </div>
+
+ </div>
+ `;
+}
+
+
+div.innerHTML=`
+ <h3>${b}</h3>
+ <p>Catálogo PDF:
+   <a href="catalogos/${pdf}" target="_blank">Abrir catálogo</a>
+ </p>
+ ${extra}
+`;
+
+
+ brandsSection.appendChild(div);
+});
+
+
+function scrollToBrand(b){
+  const el = document.getElementById(`brand-${b}`);
+
+  if(!el){
+    console.warn("Marca no encontrada:", b);
+    return;
+  }
+
+  el.scrollIntoView({behavior:'smooth'});
+  toggleMenu();
+}
+
+(async ()=>{
+  await cargarCatalogos();
+})();
+
+</script>
+</body>
+</html>
