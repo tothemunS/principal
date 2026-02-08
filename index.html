@@ -613,39 +613,6 @@ function renderMarca(marca, productos){
 
   let html = `<h3>${marca}</h3>`;
 
-if(enlacesMarca[marca]){
-  html += `
-    <div style="margin:10px 0; display:flex; gap:10px; flex-wrap:wrap;">
-      <a href="${enlacesMarca[marca].catalogo}"
-         target="_blank"
-         style="
-           padding:8px 14px;
-           background:#000;
-           color:#fff;
-           border-radius:10px;
-           text-decoration:none;
-           font-size:14px;
-         ">
-        📖 Ver catálogo digital
-      </a>
-
-      <a href="${enlacesMarca[marca].tienda}"
-         target="_blank"
-         style="
-           padding:8px 14px;
-           background:#e63946;
-           color:#fff;
-           border-radius:10px;
-           text-decoration:none;
-           font-size:14px;
-         ">
-        🛒 Ir a tienda Avon
-      </a>
-    </div>
-  `;
-}
-
-
   // ================= SETS =================
   if(sets.length){
     html += `<h4>🎁 Sets</h4><div class="fraiche-products">`;
