@@ -751,8 +751,8 @@ if(catalogosDinamicos && catalogosDinamicos[claveMarca]){
 }
 
 async function cargarCatalogos(){
-  // Obtener los catálogos dinámicos desde la Web App
-  const catalogosDinamicos = await obtenerCatalogos();
+  console.log("📦 Claves disponibles en sheetsCatalogos:");
+  console.log(Object.keys(sheetsCatalogos));
 
   for(const marca in sheetsCatalogos){
     const { url } = sheetsCatalogos[marca];
