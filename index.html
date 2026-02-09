@@ -615,35 +615,38 @@ function renderMarca(marca, productos){
 
 if (marca === "Avon") {
 
-  // 🔴 CAMBIA AQUÍ LA URL DE TU SITIO WEB
-  const sitioWebAvon = "https://tusitio.com"; 
-  // 🔴 CAMBIA AQUÍ LA URL DE TU SITIO WEB
+  // 🔴 ID DEL CATÁLOGO (Google Drive)
+  const ID_PDF_AVON = "1DZqNK0muA2TPKsB1ROo5kyTg9sBftQof";
+
+  // 👁️ Ver en línea
+  const verCatalogo =
+    `https://drive.google.com/file/d/${ID_PDF_AVON}/preview`;
+
+  // ⬇️ Descargar directo
+  const descargarCatalogo =
+    `https://drive.google.com/uc?export=download&id=${ID_PDF_AVON}`;
+
+  // 🌐 TU SITIO WEB (cámbialo cuando quieras)
+  const sitioWebAvon = "https://tusitio.com";
 
   html += `
     <div style="margin:12px 0; display:flex; gap:10px; flex-wrap:wrap;">
-      
-      <a href="https://drive.google.com/file/d/1DZqNK0muA2TPKsB1ROo5kyTg9sBftQof/preview" target="_blank">
 
-         style="
-           padding:8px 14px;
-           background:#000;
-           color:#fff;
-           border-radius:8px;
-           text-decoration:none;
-           font-size:14px;
-         ">
-        📘 Abrir catálogo
+      <a href="${verCatalogo}" target="_blank"
+         style="padding:8px 14px; background:#000; color:#fff;
+                border-radius:8px; text-decoration:none;">
+        👁️ Ver catálogo
+      </a>
+
+      <a href="${descargarCatalogo}" target="_blank"
+         style="padding:8px 14px; background:#2e7d32; color:#fff;
+                border-radius:8px; text-decoration:none;">
+        ⬇️ Descargar
       </a>
 
       <a href="${sitioWebAvon}" target="_blank"
-         style="
-           padding:8px 14px;
-           background:#1e88e5;
-           color:#fff;
-           border-radius:8px;
-           text-decoration:none;
-           font-size:14px;
-         ">
+         style="padding:8px 14px; background:#1e88e5; color:#fff;
+                border-radius:8px; text-decoration:none;">
         🌐 Sitio web
       </a>
 
