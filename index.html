@@ -586,19 +586,19 @@ async function cargarCSV(url){
     const row = {};
     headers.forEach((h, i) => row[h] = values[i] || "");
 
-    // 💰 convertir precio con centavos
-    const precioCentavos = parseInt(
-      row.precio.replace(/[^\d]/g, ""),
-      10
-    );
+    // 💰 limpiar y convertir precio correctamente
+    let precioLimpio = row.precio
+      ?.replace(",", ".")
+      ?.replace(/[^0-9.]/g, "");
+
+    let precio = parseFloat(precioLimpio);
+    if(isNaN(precio)) precio = 0;
 
     return {
       marca: row.marca,
       codigo: row.codigo,
       nombre: row.nombre,
-      precio: isNaN(precioCentavos)
-        ? 0
-        : precioCentavos / 100,
+      precio: precio,
       categoria: row.categoria
     };
   }).filter(p => p.nombre && p.precio > 0);
