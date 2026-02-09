@@ -889,53 +889,6 @@ const catalogos = {
 
 const brandsSection=document.getElementById('brandsSection');
 
-const marcasDinamicas = Object.keys(sheetsCatalogos);
-
-
-brands.forEach(b=>{
-  if(marcasDinamicas.includes(b)) return;
-
- const div=document.createElement('div');
- div.className='brand-block';
- div.id=`brand-${b}`;
-
- const pdf = catalogos[b] || "#";
-
- let extra = "";
-
-if(b === "fraiche"){
- extra = `
- <div class="fraiche-products">
-
-   <div class="fraiche-product" onclick="addToCart('Aromatizante Fraiche Telas',179)">
-     <img src="fraiche/aromatizante-telas.jpg">
-     <p>Aromatizante telas<br><b>$179</b></p>
-   </div>
-
-   <div class="fraiche-product" onclick="addToCart('Perfume Fraiche 10 ml',59)">
-     <img src="fraiche/perfume10ml.jpg">
-     <p>Perfume 10 ml<br><b>$59</b></p>
-   </div>
-
-   <div class="fraiche-product" onclick="addToCart('Perfume Fraiche 32 ml',169)">
-     <img src="fraiche/perfume32ml.jpg">
-     <p>Perfume 32 ml<br><b>$169</b></p>
-   </div>
-
-   <div class="fraiche-product" onclick="addToCart('Perfume Fraiche 60 ml',299)">
-     <img src="fraiche/perfume60ml.jpg">
-     <p>Perfume 60 ml<br><b>$299</b></p>
-   </div>
-
-   <div class="fraiche-product" onclick="addToCart('Perfume Fraiche Neeche',759)">
-     <img src="fraiche/perfumeneeche.jpg">
-     <p>Perfume Neeche<br><b>$759</b></p>
-   </div>
-
- </div>
- `;
-}
-
 
 div.innerHTML=`
  <h3>${b}</h3>
