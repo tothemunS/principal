@@ -664,8 +664,15 @@ function renderMarca(marca, productos, catalogosDinamicos){
   let html = `<h3>${marca}</h3>`;
 
   // Si existe enlace dinámico para esta marca (en minúsculas)
-  if(catalogosDinamicos && catalogosDinamicos[marca.toLowerCase()]){
-    const catalogo = catalogosDinamicos[marca.toLowerCase()];
+  const claveMarca = marca
+  .toLowerCase()
+  .replace(/\s+/g, "")
+  .replace(/[^a-z]/g, "");
+
+if(catalogosDinamicos && catalogosDinamicos[claveMarca]){
+
+    const catalogo = catalogosDinamicos[claveMarca];
+
 
     html += `
       <div style="margin:12px 0; display:flex; gap:10px; flex-wrap:wrap;">
