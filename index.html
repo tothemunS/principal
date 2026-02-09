@@ -552,6 +552,21 @@ const sheetsCatalogos = {
   }
 };
 
+async function obtenerCatalogos() {
+  const url = 'https://script.google.com/macros/s/AKfycbwbCJrkIAWsTvFBGhoMCAdY0xxU6lZIbcMZ8J-eIfQakiexu9Q9-I28Ju4l1dvsTx3oUg/exec';
+  
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('Error en la respuesta');
+    const data = await response.json();
+    return data; // Aquí tienes los catálogos actualizados
+  } catch (error) {
+    console.error('Error al obtener catálogos:', error);
+    return null;
+  }
+}
+
+
 async function cargarCSV(url){
   const res = await fetch(url);
   const text = await res.text();
@@ -591,7 +606,7 @@ function imagenProductoAvon(nombre){
 }
 
 
-function renderMarca(marca, productos){
+function renderMarca(marca, productos, catalogosDinamicos){
   const div = document.createElement("div");
   div.className = "brand-block";
   div.id = `brand-${marca}`;
@@ -613,49 +628,29 @@ function renderMarca(marca, productos){
 
   let html = `<h3>${marca}</h3>`;
 
-if (marca === "Avon") {
+  // Si existe enlace dinámico para esta marca (en minúsculas)
+  if(catalogosDinamicos && catalogosDinamicos[marca.toLowerCase()]){
+    const catalogo = catalogosDinamicos[marca.toLowerCase()];
 
-  // 🔴 ID DEL CATÁLOGO (Google Drive)
-  const ID_PDF_AVON = "1DZqNK0muA2TPKsB1ROo5kyTg9sBftQof";
+    html += `
+      <div style="margin:12px 0; display:flex; gap:10px; flex-wrap:wrap;">
+        <a href="${catalogo.ver}" target="_blank"
+           style="padding:8px 14px; background:#000; color:#fff; border-radius:8px; text-decoration:none;">
+          👁️ Ver catálogo
+        </a>
 
-  // 👁️ Ver en línea
-  const verCatalogo =
-    `https://drive.google.com/file/d/${ID_PDF_AVON}/preview`;
+        <a href="${catalogo.descargar}" target="_blank"
+           style="padding:8px 14px; background:#2e7d32; color:#fff; border-radius:8px; text-decoration:none;">
+          ⬇️ Descargar catálogo
+        </a>
 
-  // ⬇️ Descargar directo
-  const descargarCatalogo =
-    `https://drive.google.com/uc?export=download&id=${ID_PDF_AVON}`;
-
-  // 🌐 TU SITIO WEB (cámbialo cuando quieras)
-  const sitioWebAvon = "https://www.youtube.com/watch?v=aYgqszBm0qk";
-
-  html += `
-    <div style="margin:12px 0; display:flex; gap:10px; flex-wrap:wrap;">
-
-      <a href="${verCatalogo}" target="_blank"
-   style="padding:8px 14px; background:#000; color:#fff;
-          border-radius:8px; text-decoration:none;">
-  👁️ Ver catalogo
-</a>
-
-<a href="${descargarCatalogo}" target="_blank"
-   style="padding:8px 14px; background:#2e7d32; color:#fff;
-          border-radius:8px; text-decoration:none;">
-  ⬇️ Descargar catalogo
-</a>
-
-<a href="${sitioWebAvon}" target="_blank"
-   style="padding:8px 14px; background:#1e88e5; color:#fff;
-          border-radius:8px; text-decoration:none;">
-  🌐 Descuentos web
-</a>
-
-
-    </div>
-  `;
-}
-
-
+        <a href="https://www.youtube.com/watch?v=aYgqszBm0qk" target="_blank"
+           style="padding:8px 14px; background:#1e88e5; color:#fff; border-radius:8px; text-decoration:none;">
+          🌐 Descuentos web
+        </a>
+      </div>
+    `;
+  }
 
   // ================= SETS =================
   if(sets.length){
@@ -706,24 +701,24 @@ if (marca === "Avon") {
 }
 
 async function cargarCatalogos(){
+  // Obtener los catálogos dinámicos desde la Web App
+  const catalogosDinamicos = await obtenerCatalogos();
+
   for(const marca in sheetsCatalogos){
     const { url } = sheetsCatalogos[marca];
 
     const productos = await cargarCSV(url);
 
-
-    // 👇 AQUÍ VA EL ARREGLO 4
     console.log("Cargando:", marca, productos.length);
 
     productos.sort((a,b)=>
       a.nombre.localeCompare(b.nombre)
     );
 
-    renderMarca(marca, productos);
+    // PASAR también catalogosDinamicos para usar enlaces dinámicos
+    renderMarca(marca, productos, catalogosDinamicos);
   }
 }
-
-
 
 /* ================= CATALOGOS ================= */
 const catalogos = {
