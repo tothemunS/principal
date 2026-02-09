@@ -604,8 +604,28 @@ async function cargarCSV(url){
   }).filter(p => p.nombre && p.precio > 0);
 }
 
-function imagenProductoAvon(nombre){
-  const q = encodeURIComponent(`Avon ${nombre}`);
+function obtenerImagenProducto(marca, nombre){
+  const queries = {
+    "Avon": `Avon ${nombre}`,
+    "Arabela": `Arabela cosmeticos ${nombre}`,
+    "Fuller": `Fuller cosmetica ${nombre}`,
+    "Cyzone": `Cyzone ${nombre}`,
+    "Ésika": `Esika ${nombre}`,
+    "Jafra": `Jafra ${nombre}`,
+    "L'Bel": `LBel ${nombre}`,
+    "Mary Kay": `Mary Kay ${nombre}`,
+    "Natura": `Natura ${nombre}`,
+    "Sheló Nabel": `Sheló Nabel ${nombre}`,
+    "Terramar": `Terramar ${nombre}`,
+    "Tupperware": `Tupperware ${nombre}`,
+    "Yves Rocher": `Yves Rocher ${nombre}`,
+    "Betterware": `Betterware ${nombre}`
+  };
+
+  const q = encodeURIComponent(
+    queries[marca] || `${marca} ${nombre}`
+  );
+
   return `https://tse1.mm.bing.net/th?q=${q}&w=300&h=300&c=7&rs=1&p=0`;
 }
 
@@ -665,9 +685,10 @@ function renderMarca(marca, productos, catalogosDinamicos){
         <div class="fraiche-product"
           onclick="addToCart('${p.nombre}', ${p.precio})">
           <img 
-            src="${imagenProductoAvon(p.nombre)}"
-            onerror="this.src='https://placehold.co/150x150?text=Set+Avon'">
-          <p>
+  src="${obtenerImagenProducto(marca, p.nombre)}"
+  onerror="this.src='https://placehold.co/150x150?text=${encodeURIComponent(marca)}'"
+>
+
             ${p.nombre}<br>
             <b>$${p.precio}</b>
           </p>
@@ -687,8 +708,10 @@ function renderMarca(marca, productos, catalogosDinamicos){
         <div class="fraiche-product"
           onclick="addToCart('${p.nombre}', ${p.precio})">
           <img 
-            src="${imagenProductoAvon(p.nombre)}"
-            onerror="this.src='https://placehold.co/150x150?text=Avon'">
+  src="${obtenerImagenProducto(marca, p.nombre)}"
+  onerror="this.src='https://placehold.co/150x150?text=${encodeURIComponent(marca)}'"
+>
+
           <p>
             ${p.nombre}<br>
             <b>$${p.precio}</b>
