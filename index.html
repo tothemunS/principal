@@ -758,7 +758,18 @@ if(catalogosDinamicos && catalogosDinamicos[claveMarca]){
 
 async function cargarCatalogos(){
   // Obtener los catálogos dinámicos desde la Web App
-  const catalogosDinamicos = await obtenerCatalogos();
+  const rawCatalogos = await obtenerCatalogos();
+const catalogosDinamicos = {};
+
+for (const k in rawCatalogos) {
+  const clave = k
+    .toLowerCase()
+    .replace(/\s+/g, "")
+    .replace(/[^a-z]/g, "");
+
+  catalogosDinamicos[clave] = rawCatalogos[k];
+}
+
 
   for(const marca in sheetsCatalogos){
     const { url } = sheetsCatalogos[marca];
