@@ -680,9 +680,12 @@ function renderMarca(marca, productos, catalogosDinamicos){
 
 console.log("🔑 Marca:", marca, "→ clave generada:", claveMarca);
 
-if(catalogosDinamicos && catalogosDinamicos[claveMarca]){
+const catalogo =
+  catalogosDinamicos?.[claveMarca] ||
+  catalogosDinamicos?.[marca];
 
-    const catalogo = catalogosDinamicos[claveMarca];
+if(catalogo){
+
 
 
     html += `
