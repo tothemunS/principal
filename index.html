@@ -614,13 +614,16 @@ function renderMarca(marca, productos){
   let html = `<h3>${marca}</h3>`;
 
 if (marca === "Avon") {
+
+  // 🔴 CAMBIA AQUÍ LA URL DE TU SITIO WEB
+  const sitioWebAvon = "https://tusitio.com"; 
+  // 🔴 CAMBIA AQUÍ LA URL DE TU SITIO WEB
+
   html += `
-    <p>
-      <b>Catálogo PDF:</b>
+    <div style="margin:12px 0; display:flex; gap:10px; flex-wrap:wrap;">
+      
       <a href="catalogos/avon.pdf" target="_blank"
          style="
-           display:inline-block;
-           margin-top:8px;
            padding:8px 14px;
            background:#000;
            color:#fff;
@@ -630,9 +633,23 @@ if (marca === "Avon") {
          ">
         📘 Abrir catálogo
       </a>
-    </p>
+
+      <a href="${sitioWebAvon}" target="_blank"
+         style="
+           padding:8px 14px;
+           background:#1e88e5;
+           color:#fff;
+           border-radius:8px;
+           text-decoration:none;
+           font-size:14px;
+         ">
+        🌐 Sitio web
+      </a>
+
+    </div>
   `;
 }
+
 
 
   // ================= SETS =================
