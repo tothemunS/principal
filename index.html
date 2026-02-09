@@ -672,6 +672,8 @@ function renderMarca(marca, productos, catalogosDinamicos){
   .replace(/\s+/g, "")
   .replace(/[^a-z]/g, "");
 
+console.log("🔑 Marca:", marca, "→ clave generada:", claveMarca);
+
 if(catalogosDinamicos && catalogosDinamicos[claveMarca]){
 
     const catalogo = catalogosDinamicos[claveMarca];
@@ -838,6 +840,9 @@ function scrollToBrand(b){
 (async ()=>{
   await cargarCatalogos();
 })();
+
+console.log("📦 Claves disponibles en catalogosDinamicos:");
+console.log(Object.keys(catalogosDinamicos));
 
 </script>
 </body>
