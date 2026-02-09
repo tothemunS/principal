@@ -605,6 +605,10 @@ function imagenProductoAvon(nombre){
   return `https://tse1.mm.bing.net/th?q=${q}&w=300&h=300&c=7&rs=1&p=0`;
 }
 
+const marcasSinFuncionesAvon = [
+  "unauthorized originals",
+  "fraiche"
+];
 
 function renderMarca(marca, productos, catalogosDinamicos){
   const div = document.createElement("div");
@@ -629,7 +633,15 @@ function renderMarca(marca, productos, catalogosDinamicos){
   let html = `<h3>${marca}</h3>`;
 
   // Si existe enlace dinámico para esta marca (en minúsculas)
-  if(catalogosDinamicos && catalogosDinamicos[marca.toLowerCase()]){
+  const marcaKey = marca.toLowerCase();
+
+const permiteFuncionesAvon =
+  catalogosDinamicos &&
+  catalogosDinamicos[marcaKey] &&
+  !marcasSinFuncionesAvon.includes(marcaKey);
+
+if(permiteFuncionesAvon){
+
     const catalogo = catalogosDinamicos[marca.toLowerCase()];
 
     html += `
