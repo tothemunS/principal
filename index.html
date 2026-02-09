@@ -546,11 +546,122 @@ buildCalendar();
 
 /* ================= GOOGLE SHEETS ================= */
 
-const sheetsCatalogos = {
-  "Avon": {
-    url: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRmbZ6Mfu9C6tSid4SMsCGQW6d__VIUYWtbxevGVMz8qcR1tOemsPTHvTSxA3z2AE7iO3rWRce2TuGA/pub?gid=1815705184&single=true&output=csv"
+const CONFIG_MARCAS = {
+
+  avon: {
+    nombre: "Avon",
+    sheetCSV: "https://docs.google.com/spreadsheets/d/e/2PACX-1vRmbZ6Mfu9C6tSid4SMsCGQW6d__VIUYWtbxevGVMz8qcR1tOemsPTHvTSxA3z2AE7iO3rWRce2TuGA/pub?gid=1815705184&single=true&output=csv",
+    imagenes: n => `https://tse1.mm.bing.net/th?q=${encodeURIComponent("Avon " + n)}&w=300&h=300&c=7&rs=1&p=0`,
+    funcionesTipoAvon: true
+  },
+
+  arabela: {
+    nombre: "Arabela",
+    sheetCSV: "https://docs.google.com/spreadsheets/d/e/TU_CSV_ARABELA/output=csv",
+    imagenes: n => `https://tse1.mm.bing.net/th?q=${encodeURIComponent("Arabela " + n)}&w=300&h=300&c=7&rs=1&p=0`,
+    funcionesTipoAvon: true
+  },
+
+  betterware: {
+    nombre: "Betterware",
+    sheetCSV: "https://docs.google.com/spreadsheets/d/e/TU_CSV_BETTERWARE/output=csv",
+    imagenes: n => `https://tse1.mm.bing.net/th?q=${encodeURIComponent("Betterware " + n)}&w=300&h=300&c=7&rs=1&p=0`,
+    funcionesTipoAvon: true
+  },
+
+  cyzone: {
+    nombre: "Cyzone",
+    sheetCSV: "https://docs.google.com/spreadsheets/d/e/TU_CSV_CYZONE/output=csv",
+    imagenes: n => `https://tse1.mm.bing.net/th?q=${encodeURIComponent("Cyzone " + n)}&w=300&h=300&c=7&rs=1&p=0`,
+    funcionesTipoAvon: true
+  },
+
+  esika: {
+    nombre: "Ésika",
+    sheetCSV: "https://docs.google.com/spreadsheets/d/e/TU_CSV_ESIKA/output=csv",
+    imagenes: n => `https://tse1.mm.bing.net/th?q=${encodeURIComponent("Ésika " + n)}&w=300&h=300&c=7&rs=1&p=0`,
+    funcionesTipoAvon: true
+  },
+
+  fuller: {
+    nombre: "Fuller",
+    sheetCSV: "https://docs.google.com/spreadsheets/d/e/TU_CSV_FULLER/output=csv",
+    imagenes: n => `https://tse1.mm.bing.net/th?q=${encodeURIComponent("Fuller " + n)}&w=300&h=300&c=7&rs=1&p=0`,
+    funcionesTipoAvon: true
+  },
+
+  jafra: {
+    nombre: "Jafra",
+    sheetCSV: "https://docs.google.com/spreadsheets/d/e/TU_CSV_JAFRA/output=csv",
+    imagenes: n => `https://tse1.mm.bing.net/th?q=${encodeURIComponent("Jafra " + n)}&w=300&h=300&c=7&rs=1&p=0`,
+    funcionesTipoAvon: true
+  },
+
+  lbel: {
+    nombre: "L'Bel",
+    sheetCSV: "https://docs.google.com/spreadsheets/d/e/TU_CSV_LBEL/output=csv",
+    imagenes: n => `https://tse1.mm.bing.net/th?q=${encodeURIComponent("L'Bel " + n)}&w=300&h=300&c=7&rs=1&p=0`,
+    funcionesTipoAvon: true
+  },
+
+  marykay: {
+    nombre: "Mary Kay",
+    sheetCSV: "https://docs.google.com/spreadsheets/d/e/TU_CSV_MARYKAY/output=csv",
+    imagenes: n => `https://tse1.mm.bing.net/th?q=${encodeURIComponent("Mary Kay " + n)}&w=300&h=300&c=7&rs=1&p=0`,
+    funcionesTipoAvon: true
+  },
+
+  natura: {
+    nombre: "Natura",
+    sheetCSV: "https://docs.google.com/spreadsheets/d/e/TU_CSV_NATURA/output=csv",
+    imagenes: n => `https://tse1.mm.bing.net/th?q=${encodeURIComponent("Natura " + n)}&w=300&h=300&c=7&rs=1&p=0`,
+    funcionesTipoAvon: true
+  },
+
+  shelo: {
+    nombre: "Sheló Nabel",
+    sheetCSV: "https://docs.google.com/spreadsheets/d/e/TU_CSV_SHELO/output=csv",
+    imagenes: n => `https://tse1.mm.bing.net/th?q=${encodeURIComponent("Sheló Nabel " + n)}&w=300&h=300&c=7&rs=1&p=0`,
+    funcionesTipoAvon: true
+  },
+
+  terramar: {
+    nombre: "Terramar",
+    sheetCSV: "https://docs.google.com/spreadsheets/d/e/TU_CSV_TERRAMAR/output=csv",
+    imagenes: n => `https://tse1.mm.bing.net/th?q=${encodeURIComponent("Terramar " + n)}&w=300&h=300&c=7&rs=1&p=0`,
+    funcionesTipoAvon: true
+  },
+
+  tupperware: {
+    nombre: "Tupperware",
+    sheetCSV: "https://docs.google.com/spreadsheets/d/e/TU_CSV_TUPPERWARE/output=csv",
+    imagenes: n => `https://tse1.mm.bing.net/th?q=${encodeURIComponent("Tupperware " + n)}&w=300&h=300&c=7&rs=1&p=0`,
+    funcionesTipoAvon: true
+  },
+
+  yves: {
+    nombre: "Yves Rocher",
+    sheetCSV: "https://docs.google.com/spreadsheets/d/e/TU_CSV_YVES/output=csv",
+    imagenes: n => `https://tse1.mm.bing.net/th?q=${encodeURIComponent("Yves Rocher " + n)}&w=300&h=300&c=7&rs=1&p=0`,
+    funcionesTipoAvon: true
+  },
+
+  fraiche: {
+    nombre: "Fraiche",
+    sheetCSV: null,
+    imagenes: null,
+    funcionesTipoAvon: false
+  },
+
+  unauthorized: {
+    nombre: "Unauthorized Originals",
+    sheetCSV: null,
+    imagenes: null,
+    funcionesTipoAvon: false
   }
+
 };
+
 
 async function obtenerCatalogos() {
   const url = 'https://script.google.com/macros/s/AKfycbwbCJrkIAWsTvFBGhoMCAdY0xxU6lZIbcMZ8J-eIfQakiexu9Q9-I28Ju4l1dvsTx3oUg/exec';
@@ -610,7 +721,47 @@ const marcasSinFuncionesAvon = [
   "fraiche"
 ];
 
-function renderMarca(marca, productos, catalogosDinamicos){
+async function cargarCatalogosUniversales(){
+
+  // Catálogos dinámicos (ver / descargar / web)
+  const catalogosDinamicos = await obtenerCatalogos();
+
+  for(const key in CONFIG_MARCAS){
+
+    const marca = CONFIG_MARCAS[key];
+
+    // Si la marca no usa CSV (Fraiche / Unauthorized)
+    if(!marca.sheetCSV) continue;
+
+    console.log("📦 Cargando:", marca.nombre);
+
+    let productos = [];
+
+    try{
+      productos = await cargarCSV(marca.sheetCSV);
+    }catch(err){
+      console.error("❌ Error cargando", marca.nombre, err);
+      continue;
+    }
+
+    // Orden base
+    productos.sort((a,b)=>
+      a.nombre.localeCompare(b.nombre)
+    );
+
+    // Render universal
+    renderMarca(
+      marca.nombre,
+      productos,
+      catalogosDinamicos,
+      marca
+    );
+  }
+}
+
+
+function renderMarca(marca, productos, catalogosDinamicos, configMarca){
+
   const div = document.createElement("div");
   div.className = "brand-block";
   div.id = `brand-${marca}`;
@@ -673,7 +824,10 @@ if(permiteFuncionesAvon){
         <div class="fraiche-product"
           onclick="addToCart('${p.nombre}', ${p.precio})">
           <img 
-            src="${imagenProductoAvon(p.nombre)}"
+            src="${configMarca.imagenes
+  ? configMarca.imagenes(p.nombre)
+  : 'https://placehold.co/150x150'}"
+
             onerror="this.src='https://placehold.co/150x150?text=Set+Avon'">
           <p>
             ${p.nombre}<br>
@@ -712,25 +866,6 @@ if(permiteFuncionesAvon){
   brandsSection.appendChild(div);
 }
 
-async function cargarCatalogos(){
-  // Obtener los catálogos dinámicos desde la Web App
-  const catalogosDinamicos = await obtenerCatalogos();
-
-  for(const marca in sheetsCatalogos){
-    const { url } = sheetsCatalogos[marca];
-
-    const productos = await cargarCSV(url);
-
-    console.log("Cargando:", marca, productos.length);
-
-    productos.sort((a,b)=>
-      a.nombre.localeCompare(b.nombre)
-    );
-
-    // PASAR también catalogosDinamicos para usar enlaces dinámicos
-    renderMarca(marca, productos, catalogosDinamicos);
-  }
-}
 
 /* ================= CATALOGOS ================= */
 const catalogos = {
@@ -828,7 +963,7 @@ function scrollToBrand(b){
 }
 
 (async ()=>{
-  await cargarCatalogos();
+  await cargarCatalogosUniversales();
 })();
 
 </script>
