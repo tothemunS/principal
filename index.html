@@ -714,27 +714,31 @@ if(catalogo){
   }
 
   // ================= SETS =================
-  if(sets.length){
-    html += `<h4>🎁 Sets</h4><div class="fraiche-products">`;
+if(sets.length){
+  html += `<h4>🎁 Sets</h4><div class="fraiche-products">`;
 
-    sets.forEach(p=>{
-      html += `
-        <div class="fraiche-product"
-onclick="abrirModalProducto('${marca}', '${p.nombre}', ${p.precio})"
-          <img 
-  src="${obtenerImagenProducto(marca, p.nombre)}"
-  onerror="this.src='https://placehold.co/150x150?text=${encodeURIComponent(marca)}'"
->
+  sets.forEach(p=>{
+    html += `
+      <div class="fraiche-product"
+        onclick="abrirModalProducto('${marca}', '${p.nombre}', ${p.precio})">
+        
+        <img 
+          src="${obtenerImagenProducto(marca, p.nombre)}"
+          onerror="this.src='https://placehold.co/150x150?text=${encodeURIComponent(marca)}'"
+        >
 
-            ${p.nombre}<br>
-            <b>$${p.precio}</b>
-          </p>
-        </div>
-      `;
-    });
+        <p>
+          ${p.nombre}<br>
+          <b>$${p.precio}</b>
+        </p>
 
-    html += `</div>`;
-  }
+      </div>
+    `;
+  });
+
+  html += `</div>`;
+}
+
 
   // ================= PRODUCTOS =================
   if(normales.length){
@@ -743,7 +747,7 @@ onclick="abrirModalProducto('${marca}', '${p.nombre}', ${p.precio})"
     normales.forEach(p=>{
       html += `
         <div class="fraiche-product"
-          onclick="addToCart('${p.nombre}', ${p.precio})">
+          onclick="abrirModalProducto('${marca}', '${p.nombre}', ${p.precio})"
           <img 
   src="${obtenerImagenProducto(marca, p.nombre)}"
   onerror="this.src='https://placehold.co/150x150?text=${encodeURIComponent(marca)}'"
