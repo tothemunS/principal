@@ -334,7 +334,7 @@ const brands=[
 "Jafra","L'Bel","Mary Kay","Natura",
 "Terramar","Tupperware",
 "Unauthorized Originals"
-].sort();
+];
 
 const sideMenu=document.getElementById("sideMenu");
 const overlay=document.getElementById("overlay");
@@ -823,34 +823,33 @@ const brandsSection=document.getElementById('brandsSection');
 const marcasDinamicas = Object.keys(sheetsCatalogos);
 
 
-brands.forEach(b=>{
-  if(marcasDinamicas.includes(b)){
-    console.log("Saltando render estático de:", b);
-    return;
-  }
+function renderMarcasEstaticas(){
 
-  const div=document.createElement('div');
-  div.className='brand-block';
-  div.id=`brand-${b}`;
+  const marcasSinSheets = brands.filter(
+    b => !Object.keys(sheetsCatalogos).includes(b)
+  );
 
-  const pdf = catalogos[b] || "#";
+  marcasSinSheets.forEach(b=>{
 
-  let extra = "";
+    const div=document.createElement('div');
+    div.className='brand-block';
+    div.id=`brand-${b}`;
 
-  if(b === "fraiche"){
-    extra = `...`;
-  }
+    const pdf = catalogos[b] || "#";
 
-  div.innerHTML=`
-    <h3>${b}</h3>
-    <p>Catálogo PDF:
-      <a href="catalogos/${pdf}" target="_blank">Abrir catálogo</a>
-    </p>
-    ${extra}
-  `;
+    div.innerHTML=`
+      <h3>${b}</h3>
+      <p>Catálogo PDF:
+        <a href="catalogos/${pdf}" target="_blank">
+          Abrir catálogo
+        </a>
+      </p>
+    `;
 
-  brandsSection.appendChild(div);
-});
+    brandsSection.appendChild(div);
+
+  });
+}
 
 
 function scrollToBrand(b){
@@ -866,8 +865,10 @@ function scrollToBrand(b){
 }
 
 (async ()=>{
-  await cargarCatalogos();
+  await cargarCatalogos();   // Primero Google Sheets
+  renderMarcasEstaticas();   // Después las que faltan
 })();
+
 
 console.log("📦 Claves disponibles en catalogosDinamicos:");
 console.log(Object.keys(catalogosDinamicos));
