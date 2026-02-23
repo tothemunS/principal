@@ -538,8 +538,14 @@ function buildCalendar(){
  const first = new Date(y,m,1).getDay();
  const days = new Date(y,m+1,0).getDate();
 
- let html = `<h3>Calendario</h3><table><tr>`;
- const wd=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+ // Calcular próximo martes
+ let nextTuesday = new Date(now);
+ while(nextTuesday.getDay() !== 2){
+   nextTuesday.setDate(nextTuesday.getDate() + 1);
+ }
+
+ let html = `<table class="miniCalendar"><tr>`;
+ const wd=['D','L','M','M','J','V','S'];
  wd.forEach(d=>html+=`<th>${d}</th>`);
  html+='</tr><tr>';
 
@@ -548,22 +554,27 @@ function buildCalendar(){
  for(let d=1; d<=days; d++){
 
    const fecha = new Date(y,m,d);
-   const esHoy = d === now.getDate();
-   const esMartes = fecha.getDay() === 2; // 2 = Martes
-
    let clase = "";
-   let etiqueta = d;
+
+   const esHoy = d === now.getDate();
+   const esMartes = fecha.getDay() === 2;
 
    if(esHoy){
      clase = "today";
    }
 
    if(esMartes){
-     clase += " pedido";
-     etiqueta = `${d}<br><small>Pedido</small>`;
+     if(
+       fecha.getDate() === nextTuesday.getDate() &&
+       fecha.getMonth() === nextTuesday.getMonth()
+     ){
+       clase = "nextTuesday";
+     }else if(fecha < nextTuesday){
+       clase = "pastTuesday";
+     }
    }
 
-   html += `<td class='${clase}'>${etiqueta}</td>`;
+   html += `<td class='${clase}'>${d}</td>`;
 
    if((first+d)%7===0) html+='</tr><tr>';
  }
