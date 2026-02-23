@@ -821,22 +821,24 @@ if(sets.length){
   if(normales.length){
     html += `<h4>🛍️ Productos</h4><div class="fraiche-products">`;
 
-    normales.forEach(p=>{
-      html += `
-        <div class="fraiche-product"
-          onclick="abrirModalProducto('${marca}', '${p.nombre}', ${p.precio})"
-          <img 
-  src="${obtenerImagenProducto(marca, p.nombre)}"
-  onerror="this.src='https://placehold.co/150x150?text=${encodeURIComponent(marca)}'"
->
+normales.forEach(p=>{
+  html += `
+    <div class="fraiche-product"
+      onclick="abrirModalProducto('${marca}', '${p.nombre}', ${p.precio})">
 
-          <p>
-            ${p.nombre}<br>
-            <b>$${p.precio}</b>
-          </p>
-        </div>
-      `;
-    });
+      <img 
+        src="${obtenerImagenProducto(marca, p.nombre)}"
+        onerror="this.src='https://placehold.co/150x150?text=${encodeURIComponent(marca)}'"
+      >
+
+      <p>
+        ${p.nombre}<br>
+        <b>$${p.precio}</b>
+      </p>
+
+    </div>
+  `;
+});
 
     html += `</div>`;
   }
