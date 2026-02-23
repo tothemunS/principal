@@ -524,25 +524,48 @@ setInterval(()=>{
 
 /* ================= CALENDARIO SIMPLE ================= */
 function buildCalendar(){
- const box=document.getElementById('calendarBox');
- const now=new Date();
- const y=now.getFullYear();
- const m=now.getMonth();
- const first=new Date(y,m,1).getDay();
- const days=new Date(y,m+1,0).getDate();
- let html=`<h3>Calendario</h3><table><tr>`;
+
+ const box = document.getElementById('calendarBox');
+ const now = new Date();
+ const y = now.getFullYear();
+ const m = now.getMonth();
+ const first = new Date(y,m,1).getDay();
+ const days = new Date(y,m+1,0).getDate();
+
+ let html = `<h3>Calendario</h3><table><tr>`;
  const wd=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
  wd.forEach(d=>html+=`<th>${d}</th>`);
  html+='</tr><tr>';
+
  for(let i=0;i<first;i++) html+='<td></td>';
- for(let d=1;d<=days;d++){
-   const today=(d===now.getDate())?'today':'';
-   html+=`<td class='${today}'>${d}</td>`;
+
+ for(let d=1; d<=days; d++){
+
+   const fecha = new Date(y,m,d);
+   const esHoy = d === now.getDate();
+   const esMartes = fecha.getDay() === 2; // 2 = Martes
+
+   let clase = "";
+   let etiqueta = d;
+
+   if(esHoy){
+     clase = "today";
+   }
+
+   if(esMartes){
+     clase += " pedido";
+     etiqueta = `${d}<br><small>Pedido</small>`;
+   }
+
+   html += `<td class='${clase}'>${etiqueta}</td>`;
+
    if((first+d)%7===0) html+='</tr><tr>';
  }
+
  html+='</tr></table>';
- box.innerHTML=html;
+ box.innerHTML = html;
 }
+
 buildCalendar();
 
 /* ================= GOOGLE SHEETS ================= */
