@@ -895,9 +895,14 @@ function cerrarModal(){
   renderMarcasEstaticas();   // Después las que faltan
 })();
 
+/* ===== OCULTAR CARRUSEL TEMPORALMENTE ===== */
+document.addEventListener("DOMContentLoaded", function() {
+  const carrusel = document.querySelector(".carousel-wrapper");
+  if (carrusel) {
+    carrusel.style.display = "none";
+  }
+});
 
-console.log("📦 Claves disponibles en catalogosDinamicos:");
-console.log(Object.keys(catalogosDinamicos));
 
 </script>
 
