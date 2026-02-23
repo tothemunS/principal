@@ -571,7 +571,8 @@ function buildCalendar(){
  const now = new Date();
  const y = now.getFullYear();
  const m = now.getMonth();
- const first = new Date(y,m,1).getDay();
+let first = new Date(y,m,1).getDay();
+first = (first === 0) ? 6 : first - 1;
  const days = new Date(y,m+1,0).getDate();
 
  // Calcular próximo martes
@@ -581,8 +582,8 @@ function buildCalendar(){
  }
 
  let html = `<table class="miniCalendar"><tr>`;
- const wd=['D','L','M','M','J','V','S'];
- wd.forEach(d=>html+=`<th>${d}</th>`);
+const wd=['L','M','M','J','V','S','D'];
+wd.forEach(d=>html+=`<th>${d}</th>`);
  html+='</tr><tr>';
 
  for(let i=0;i<first;i++) html+='<td></td>';
@@ -612,7 +613,7 @@ function buildCalendar(){
 
    html += `<td class='${clase}'>${d}</td>`;
 
-   if((first+d)%7===0) html+='</tr><tr>';
+if((first + d) % 7 === 0) html+='</tr><tr>';
  }
 
  html+='</tr></table>';
