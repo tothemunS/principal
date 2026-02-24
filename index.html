@@ -368,7 +368,7 @@ AQUÍ VAN LOS ICONOS QUE ME PEDISTE
 <div id="calendarBox"></div>
 
 <!-- ================= LOGIN FIREBASE ================= -->
-<div style="
+<div id="loginBox" style="
   text-align:center;
   margin:20px auto;
   background:#fff;
@@ -409,7 +409,18 @@ AQUÍ VAN LOS ICONOS QUE ME PEDISTE
 
 </div>
 
-
+<div id="userBox" style="
+  display:none;
+  text-align:center;
+  margin:20px auto;
+  background:#e8f5e9;
+  padding:12px;
+  max-width:400px;
+  border-radius:16px;
+  box-shadow:0 6px 16px rgba(0,0,0,.1);
+  font-weight:bold;
+">
+</div>
 
 <!-- MARCAS / CATALOGOS -->
 <div class="section" id="brandsSection"></div>
@@ -1160,10 +1171,51 @@ window.cerrarSesion = async () => {
 // ================= DETECTAR SESIÓN =================
 
 onAuthStateChanged(auth, (user) => {
+
+  const loginBox = document.getElementById("loginBox");
+  const userBox = document.getElementById("userBox");
+
   if (user) {
-    console.log("🟢 Usuario activo:", user.email);
+
+    // Guardar usuario activo
+    localStorage.setItem("usuarioActivo", user.email);
+    usuarioActivo = user.email;
+
+    // Ocultar login
+    loginBox.style.display = "none";
+
+    // Mostrar usuario activo
+    userBox.style.display = "block";
+    userBox.innerHTML = `
+      ✅ Sesión iniciada: ${user.email}
+      <br><br>
+      <button onclick="cerrarSesion()" style="
+        padding:6px 12px;
+        border:none;
+        border-radius:8px;
+        background:#000;
+        color:#fff;
+        cursor:pointer;
+      ">
+        Cerrar sesión
+      </button>
+    `;
+
+    // Cargar carrito del usuario
+    const carritoGuardado = localStorage.getItem("carrito_" + user.email);
+    if(carritoGuardado){
+      cart = JSON.parse(carritoGuardado);
+      updateCart();
+    }
+
   } else {
-    console.log("🔴 No hay sesión activa");
+
+    localStorage.removeItem("usuarioActivo");
+    usuarioActivo = null;
+
+    loginBox.style.display = "block";
+    userBox.style.display = "none";
+
   }
 });
 
