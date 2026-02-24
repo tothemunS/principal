@@ -1,3 +1,5 @@
+si se abre el carrito, el problema es que no hay cómo cerrarlo, tambien quiero que al abrirse se obscuresca el resto de la pantalla como al abrir el menu lateral de marcas::
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -52,22 +54,6 @@ border:none;border-radius:10px;cursor:pointer;font-size:20px
   z-index:900;
 }
 #overlay.show{
-  opacity:1;
-  pointer-events:auto;
-}
-
-/* ================= OVERLAY CARRITO ================= */
-#cartOverlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.55);
-  opacity:0;
-  pointer-events:none;
-  transition:.3s;
-  z-index:2500;
-}
-
-#cartOverlay.show{
   opacity:1;
   pointer-events:auto;
 }
@@ -594,24 +580,14 @@ function updateCart(){
 }
 
 function toggleCartPanel(){
-
   const panel = document.getElementById("cartPanel");
-  const overlay = document.getElementById("cartOverlay");
 
-  const abierto = panel.style.right === "0px";
-
-  if(abierto){
+  if(panel.style.right === "0px"){
     panel.style.right = "-400px";
-    overlay.classList.remove("show");
-  }else{
+  } else {
     panel.style.right = "0px";
-    overlay.classList.add("show");
     renderCartPanel();
   }
-}
-
-document.getElementById("cartOverlay").onclick = function(){
-  toggleCartPanel();
 }
 
 function renderCartPanel(){
@@ -1186,9 +1162,6 @@ function cerrarModal(){
 </div>
 
 <!-- ================= PANEL CARRITO ================= -->
-
-<div id="cartOverlay"></div>
-
 <div id="cartPanel" style="
   position:fixed;
   top:0;
