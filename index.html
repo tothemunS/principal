@@ -530,7 +530,6 @@ const pb = ventasGlobales[b.dataset.name] || 0;
 
 /* ================= CARRITO ================= */
 let cart=[]; 
-let usuarioActivo = localStorage.getItem("usuarioActivo") || null;
 let ventasGlobales = JSON.parse(
   localStorage.getItem("ventasGlobales")
 ) || {}; let popularidad = {};
@@ -1027,33 +1026,10 @@ function cerrarModal(){
 })();
 
 /* ===== OCULTAR CARRUSEL TEMPORALMENTE ===== */
-document.addEventListener("DOMContentLoaded", function() {
-
-  actualizarUsuarioUI();
-
-  if(usuarioActivo){
-    cargarCarritoUsuario();
-  }
-
-  const carrusel = document.querySelector(".carousel-wrapper");
-  if (carrusel) {
-    carrusel.style.display = "none";
-  }
-});
 
 
 </script>
 
-<!-- ================= LOGIN FIREBASE ================= -->
-<div style="
-  text-align:center;
-  margin:20px auto;
-  background:#fff;
-  padding:15px;
-  max-width:400px;
-  border-radius:16px;
-  box-shadow:0 6px 16px rgba(0,0,0,.1);
-">
 
   <input type="email" id="email" placeholder="Correo"
     style="padding:8px;border-radius:8px;border:1px solid #ccc;width:90%;margin-bottom:10px;">
