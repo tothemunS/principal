@@ -571,8 +571,8 @@ function addToCart(n,p){
 function updateCart(){
   document.getElementById('cartCount').innerText = window.cart.length;
 
-  if(auth.currentUser){
-    guardarCarritoFirestore();
+  if(window.auth && window.auth.currentUser){
+    window.guardarCarritoFirestore();
   }
 }
 
@@ -1131,8 +1131,7 @@ window.auth = auth;
 window.db = db;
 
 // ================= GUARDAR CARRITO FIRESTORE =================
-async function guardarCarritoFirestore() {
-
+window.guardarCarritoFirestore = async function() {
   if (!auth.currentUser) return;
 
   const user = auth.currentUser;
@@ -1165,9 +1164,9 @@ async function cargarCarritoFirestore() {
       updateCart();
       console.log("🔥 Carrito cargado desde Firestore");
     } else {
-      cart = [];
-      updateCart();
-    }
+  window.cart = [];
+  updateCart();
+}
 
   } catch (error) {
     console.error("Error cargando carrito:", error);
