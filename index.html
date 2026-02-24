@@ -367,6 +367,49 @@ AQUÍ VAN LOS ICONOS QUE ME PEDISTE
 <!-- CALENDARIO -->
 <div id="calendarBox"></div>
 
+<!-- ================= LOGIN FIREBASE ================= -->
+<div style="
+  text-align:center;
+  margin:20px auto;
+  background:#fff;
+  padding:15px;
+  max-width:400px;
+  border-radius:16px;
+  box-shadow:0 6px 16px rgba(0,0,0,.1);
+">
+
+  <input type="email" id="email" placeholder="Correo"
+    style="padding:8px;border-radius:8px;border:1px solid #ccc;width:90%;margin-bottom:10px;">
+
+  <input type="password" id="password" placeholder="Contraseña"
+    style="padding:8px;border-radius:8px;border:1px solid #ccc;width:90%;margin-bottom:10px;">
+
+  <button onclick="registrarUsuario(
+    document.getElementById('email').value,
+    document.getElementById('password').value
+  )"
+  style="padding:8px 12px;border:none;border-radius:8px;background:#000;color:#fff;margin-right:6px;">
+    Registrarse
+  </button>
+
+  <button onclick="iniciarSesion(
+    document.getElementById('email').value,
+    document.getElementById('password').value
+  )"
+  style="padding:8px 12px;border:none;border-radius:8px;background:#2e7d32;color:#fff;margin-right:6px;">
+    Iniciar sesión
+  </button>
+
+  <button onclick="cerrarSesion()"
+  style="padding:8px 12px;border:none;border-radius:8px;background:#999;color:#fff;">
+    Cerrar sesión
+  </button>
+
+  <p id="estadoUsuario" style="margin-top:10px;font-size:14px;"></p>
+
+</div>
+
+
 
 <!-- MARCAS / CATALOGOS -->
 <div class="section" id="brandsSection"></div>
@@ -990,47 +1033,6 @@ function cerrarModal(){
 
 </script>
 
-<!-- ================= LOGIN FIREBASE ================= -->
-<div style="
-  text-align:center;
-  margin:20px auto;
-  background:#fff;
-  padding:15px;
-  max-width:400px;
-  border-radius:16px;
-  box-shadow:0 6px 16px rgba(0,0,0,.1);
-">
-
-  <input type="email" id="email" placeholder="Correo"
-    style="padding:8px;border-radius:8px;border:1px solid #ccc;width:90%;margin-bottom:10px;">
-
-  <input type="password" id="password" placeholder="Contraseña"
-    style="padding:8px;border-radius:8px;border:1px solid #ccc;width:90%;margin-bottom:10px;">
-
-  <button onclick="registrarUsuario(
-    document.getElementById('email').value,
-    document.getElementById('password').value
-  )"
-  style="padding:8px 12px;border:none;border-radius:8px;background:#000;color:#fff;margin-right:6px;">
-    Registrarse
-  </button>
-
-  <button onclick="iniciarSesion(
-    document.getElementById('email').value,
-    document.getElementById('password').value
-  )"
-  style="padding:8px 12px;border:none;border-radius:8px;background:#2e7d32;color:#fff;margin-right:6px;">
-    Iniciar sesión
-  </button>
-
-  <button onclick="cerrarSesion()"
-  style="padding:8px 12px;border:none;border-radius:8px;background:#999;color:#fff;">
-    Cerrar sesión
-  </button>
-
-  <p id="estadoUsuario" style="margin-top:10px;font-size:14px;"></p>
-
-</div>
 
 <!-- ================= MODAL PRODUCTO ================= -->
 <div id="productModal" style="
