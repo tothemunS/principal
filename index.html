@@ -365,7 +365,7 @@ AQUÍ VAN LOS ICONOS QUE ME PEDISTE
 <!-- CALENDARIO -->
 <div id="calendarBox"></div>
 
-<!-- LOGIN FIREBASE -->
+<!-- LOGIN USUARIO -->
 <div style="
   text-align:center;
   margin:20px auto;
@@ -376,31 +376,41 @@ AQUÍ VAN LOS ICONOS QUE ME PEDISTE
   box-shadow:0 6px 16px rgba(0,0,0,.1);
 ">
 
-  <input type="email" id="email" placeholder="Correo"
-    style="padding:8px;border-radius:8px;border:1px solid #ccc;width:90%;margin-bottom:10px;">
+  <input
+    type="text"
+    id="inputUsuario"
+    placeholder="Tu nombre"
+    style="
+      padding:8px;
+      border-radius:8px;
+      border:1px solid #ccc;
+      width:60%;
+    "
+  >
 
-  <input type="password" id="password" placeholder="Contraseña"
-    style="padding:8px;border-radius:8px;border:1px solid #ccc;width:90%;margin-bottom:10px;">
-
-  <button onclick="registrarUsuario(
-    document.getElementById('email').value,
-    document.getElementById('password').value
-  )">
-    Registrarse
+  <button onclick="iniciarSesion()" style="
+    padding:8px 12px;
+    border:none;
+    border-radius:8px;
+    background:#000;
+    color:#fff;
+    cursor:pointer;
+  ">
+    Iniciar
   </button>
 
-  <button onclick="iniciarSesion(
-    document.getElementById('email').value,
-    document.getElementById('password').value
-  )">
-    Iniciar sesión
+  <button onclick="cerrarSesion()" style="
+    padding:8px 12px;
+    border:none;
+    border-radius:8px;
+    background:#999;
+    color:#fff;
+    cursor:pointer;
+  ">
+    Salir
   </button>
 
-  <button onclick="cerrarSesion()">
-    Cerrar sesión
-  </button>
-
-  <p id="estadoUsuario"></p>
+  <p id="usuarioActual" style="margin-top:10px;font-size:14px;"></p>
 
 </div>
 
@@ -530,6 +540,7 @@ const pb = ventasGlobales[b.dataset.name] || 0;
 
 /* ================= CARRITO ================= */
 let cart=[]; 
+let usuarioActivo = localStorage.getItem("usuarioActivo") || null;
 let ventasGlobales = JSON.parse(
   localStorage.getItem("ventasGlobales")
 ) || {}; let popularidad = {};
@@ -550,16 +561,13 @@ function addToCart(n,p){
 }
 
 
-async function updateCart(){
-
+function updateCart(){
   document.getElementById('cartCount').innerText = cart.length;
 
-  const user = auth.currentUser;
-
-  if(user){
-    await setDoc(
-      doc(db, "carritos", user.uid),
-      { items: cart }
+  if(usuarioActivo){
+    localStorage.setItem(
+      "carrito_" + usuarioActivo,
+      JSON.stringify(cart)
     );
   }
 }
@@ -1019,6 +1027,58 @@ function cerrarModal(){
   document.getElementById("productModal").style.display = "none";
 }
 
+/* ================= LOGIN SIMPLE ================= */
+
+function iniciarSesion(){
+
+  const nombre = document
+    .getElementById("inputUsuario")
+    .value
+    .trim();
+
+  if(!nombre){
+    alert("Escribe tu nombre");
+    return;
+  }
+
+  usuarioActivo = nombre;
+  localStorage.setItem("usuarioActivo", nombre);
+
+  cargarCarritoUsuario();
+  actualizarUsuarioUI();
+}
+
+function cerrarSesion(){
+  usuarioActivo = null;
+  localStorage.removeItem("usuarioActivo");
+  cart = [];
+  updateCart();
+  actualizarUsuarioUI();
+}
+
+function actualizarUsuarioUI(){
+  const p = document.getElementById("usuarioActual");
+
+  if(usuarioActivo){
+    p.innerHTML =
+      "Sesión iniciada como: <b>" + usuarioActivo + "</b>";
+  }else{
+    p.innerHTML = "No has iniciado sesión";
+  }
+}
+
+function cargarCarritoUsuario(){
+
+  if(!usuarioActivo) return;
+
+  const data = localStorage.getItem(
+    "carrito_" + usuarioActivo
+  );
+
+  cart = data ? JSON.parse(data) : [];
+
+  updateCart();
+}
 
 (async ()=>{
   await cargarCatalogos();   // Primero Google Sheets
@@ -1026,41 +1086,22 @@ function cerrarModal(){
 })();
 
 /* ===== OCULTAR CARRUSEL TEMPORALMENTE ===== */
+document.addEventListener("DOMContentLoaded", function() {
+
+  actualizarUsuarioUI();
+
+  if(usuarioActivo){
+    cargarCarritoUsuario();
+  }
+
+  const carrusel = document.querySelector(".carousel-wrapper");
+  if (carrusel) {
+    carrusel.style.display = "none";
+  }
+});
 
 
 </script>
-
-
-  <input type="email" id="email" placeholder="Correo"
-    style="padding:8px;border-radius:8px;border:1px solid #ccc;width:90%;margin-bottom:10px;">
-
-  <input type="password" id="password" placeholder="Contraseña"
-    style="padding:8px;border-radius:8px;border:1px solid #ccc;width:90%;margin-bottom:10px;">
-
-  <button onclick="registrarUsuario(
-    document.getElementById('email').value,
-    document.getElementById('password').value
-  )"
-  style="padding:8px 12px;border:none;border-radius:8px;background:#000;color:#fff;margin-right:6px;">
-    Registrarse
-  </button>
-
-  <button onclick="iniciarSesion(
-    document.getElementById('email').value,
-    document.getElementById('password').value
-  )"
-  style="padding:8px 12px;border:none;border-radius:8px;background:#2e7d32;color:#fff;margin-right:6px;">
-    Iniciar sesión
-  </button>
-
-  <button onclick="cerrarSesion()"
-  style="padding:8px 12px;border:none;border-radius:8px;background:#999;color:#fff;">
-    Cerrar sesión
-  </button>
-
-  <p id="estadoUsuario" style="margin-top:10px;font-size:14px;"></p>
-
-</div>
 
 <!-- ================= MODAL PRODUCTO ================= -->
 <div id="productModal" style="
@@ -1124,12 +1165,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-import {
-  doc,
-  setDoc,
-  getDoc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
 // TU CONFIG (la que Firebase te dio)
 const firebaseConfig = {
   apiKey: "AIzaSyCPGsbPF02rktL6TTlSHJ43Sxxqq6op-Qs",
@@ -1152,69 +1187,6 @@ window.db = db;
 
 console.log("🔥 Firebase conectado correctamente");
 
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-
-// ================= REGISTRO =================
-window.registrarUsuario = async (email, password) => {
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    alert("✅ Usuario creado correctamente");
-    console.log("Usuario:", userCredential.user);
-  } catch (error) {
-    alert("❌ Error: " + error.message);
-  }
-};
-
-
-// ================= LOGIN =================
-window.iniciarSesion = async (email, password) => {
-  try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    alert("✅ Sesión iniciada");
-    console.log("Usuario:", userCredential.user);
-  } catch (error) {
-    alert("❌ Error: " + error.message);
-  }
-};
-
-
-// ================= LOGOUT =================
-window.cerrarSesion = async () => {
-  await signOut(auth);
-  alert("👋 Sesión cerrada");
-};
-
-
-// ================= DETECTAR SESIÓN =================
-onAuthStateChanged(auth, async (user) => {
-
-  const estado = document.getElementById("estadoUsuario");
-
-  if (user) {
-
-    estado.innerHTML = "🟢 Sesión activa: <b>" + user.email + "</b>";
-
-    const docSnap = await getDoc(doc(db, "carritos", user.uid));
-
-    if (docSnap.exists()) {
-      cart = docSnap.data().items || [];
-      document.getElementById('cartCount').innerText = cart.length;
-    }
-
-  } else {
-
-    estado.innerHTML = "🔴 No hay sesión activa";
-    cart = [];
-    document.getElementById('cartCount').innerText = 0;
-
-  }
-});
 </script>
 
 </body>
