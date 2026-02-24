@@ -1158,5 +1158,36 @@ document.addEventListener("DOMContentLoaded", function() {
   </div>
 </div>
 
+<script type="module">
+
+// Firebase imports desde CDN (NO los que te dio la consola)
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// TU CONFIG (la que Firebase te dio)
+const firebaseConfig = {
+  apiKey: "AIzaSyCPGsbPF02rktL6TTlSHJ43Sxxqq6op-Qs",
+  authDomain: "tothemuns-e81c4.firebaseapp.com",
+  projectId: "tothemuns-e81c4",
+  storageBucket: "tothemuns-e81c4.firebasestorage.app",
+  messagingSenderId: "1038263694291",
+  appId: "1:1038263694291:web:4f879125d737ac57eaf526",
+  measurementId: "G-Z6N8CYRJCY"
+};
+
+// Inicializar
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// Hacerlo accesible globalmente
+window.auth = auth;
+window.db = db;
+
+console.log("🔥 Firebase conectado correctamente");
+
+</script>
+
 </body>
 </html>
