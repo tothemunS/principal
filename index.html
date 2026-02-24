@@ -1187,6 +1187,54 @@ window.db = db;
 
 console.log("🔥 Firebase conectado correctamente");
 
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+
+// ================= REGISTRO =================
+window.registrarUsuario = async (email, password) => {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    alert("✅ Usuario creado correctamente");
+    console.log("Usuario:", userCredential.user);
+  } catch (error) {
+    alert("❌ Error: " + error.message);
+  }
+};
+
+
+// ================= LOGIN =================
+window.iniciarSesion = async (email, password) => {
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    alert("✅ Sesión iniciada");
+    console.log("Usuario:", userCredential.user);
+  } catch (error) {
+    alert("❌ Error: " + error.message);
+  }
+};
+
+
+// ================= LOGOUT =================
+window.cerrarSesion = async () => {
+  await signOut(auth);
+  alert("👋 Sesión cerrada");
+};
+
+
+// ================= DETECTAR SESIÓN =================
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    console.log("🟢 Usuario activo:", user.email);
+  } else {
+    console.log("🔴 No hay sesión activa");
+  }
+});
+
 </script>
 
 </body>
