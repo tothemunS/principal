@@ -57,7 +57,9 @@ border:none;border-radius:10px;cursor:pointer;font-size:20px
 }
 
 /* ================= CARRUSEL ================= */
+/* ================= CARRUSEL ================= */
 .carousel-wrapper{
+  display:none;   /* 🔥 SIEMPRE OCULTO */
   width:100%;
   height:520px;
   perspective:1600px;
@@ -1156,24 +1158,10 @@ window.cerrarSesion = async () => {
 // ================= DETECTAR SESIÓN =================
 
 onAuthStateChanged(auth, (user) => {
-
-  const carrusel = document.querySelector(".carousel-wrapper");
-
   if (user) {
     console.log("🟢 Usuario activo:", user.email);
-
-    // 🔥 OCULTAR CARRUSEL SI HAY SESIÓN
-    if(carrusel){
-      carrusel.style.display = "none";
-    }
-
   } else {
     console.log("🔴 No hay sesión activa");
-
-    // 🔥 MOSTRAR CARRUSEL SI NO HAY SESIÓN
-    if(carrusel){
-      carrusel.style.display = "block";
-    }
   }
 });
 
