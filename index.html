@@ -547,14 +547,14 @@ const pb = ventasGlobales[b.dataset.name] || 0;
 
 
 /* ================= CARRITO ================= */
-let cart=[]; 
+window.cart = [];
 let usuarioActivo = localStorage.getItem("usuarioActivo") || null;
 let ventasGlobales = JSON.parse(
   localStorage.getItem("ventasGlobales")
 ) || {}; let popularidad = {};
 function addToCart(n,p){
 
-  cart.push({n,p});
+  window.cart.push({n,p});
   updateCart();
 
   // 🔥 estadísticas reales
@@ -569,7 +569,7 @@ function addToCart(n,p){
 }
 
 function updateCart(){
-  document.getElementById('cartCount').innerText = cart.length;
+  document.getElementById('cartCount').innerText = window.cart.length;
 
   if(auth.currentUser){
     guardarCarritoFirestore();
@@ -1140,7 +1140,7 @@ async function guardarCarritoFirestore() {
   try {
     await setDoc(doc(db, "carritos", user.uid), {
       email: user.email,
-      carrito: cart,
+carrito: window.cart,
       actualizado: new Date()
     });
 
@@ -1161,7 +1161,7 @@ async function cargarCarritoFirestore() {
     const docSnap = await getDoc(doc(db, "carritos", user.uid));
 
     if (docSnap.exists()) {
-      cart = docSnap.data().carrito || [];
+      window.cart = docSnap.data().carrito || [];
       updateCart();
       console.log("🔥 Carrito cargado desde Firestore");
     } else {
