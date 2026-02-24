@@ -985,21 +985,6 @@ function cerrarModal(){
   renderMarcasEstaticas();   // Después las que faltan
 })();
 
-/* ===== OCULTAR CARRUSEL TEMPORALMENTE ===== */
-document.addEventListener("DOMContentLoaded", function() {
-
-  actualizarUsuarioUI();
-
-  if(usuarioActivo){
-    cargarCarritoUsuario();
-  }
-
-  const carrusel = document.querySelector(".carousel-wrapper");
-  if (carrusel) {
-    carrusel.style.display = "none";
-  }
-});
-
 
 </script>
 
@@ -1169,13 +1154,29 @@ window.cerrarSesion = async () => {
 
 
 // ================= DETECTAR SESIÓN =================
+
 onAuthStateChanged(auth, (user) => {
+
+  const carrusel = document.querySelector(".carousel-wrapper");
+
   if (user) {
     console.log("🟢 Usuario activo:", user.email);
+
+    // 🔥 OCULTAR CARRUSEL SI HAY SESIÓN
+    if(carrusel){
+      carrusel.style.display = "none";
+    }
+
   } else {
     console.log("🔴 No hay sesión activa");
+
+    // 🔥 MOSTRAR CARRUSEL SI NO HAY SESIÓN
+    if(carrusel){
+      carrusel.style.display = "block";
+    }
   }
 });
+
 </script>
 
 </body>
