@@ -568,17 +568,14 @@ function addToCart(n,p){
   ordenarCarruselPorPopularidad(); // actualiza el carrusel
 }
 
-
 function updateCart(){
   document.getElementById('cartCount').innerText = cart.length;
 
-  if(usuarioActivo){
-    localStorage.setItem(
-      "carrito_" + usuarioActivo,
-      JSON.stringify(cart)
-    );
+  if(auth.currentUser){
+    guardarCarritoFirestore();
   }
 }
+
 function openWhatsApp(){
 
  const numero = "525632753493"; // ← TU NUMERO AQUI
@@ -1105,7 +1102,13 @@ function cerrarModal(){
 // Firebase imports desde CDN (NO los que te dio la consola)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { 
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  updateDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // TU CONFIG (la que Firebase te dio)
 const firebaseConfig = {
@@ -1126,6 +1129,50 @@ const db = getFirestore(app);
 // Hacerlo accesible globalmente
 window.auth = auth;
 window.db = db;
+
+// ================= GUARDAR CARRITO FIRESTORE =================
+async function guardarCarritoFirestore() {
+
+  if (!auth.currentUser) return;
+
+  const user = auth.currentUser;
+
+  try {
+    await setDoc(doc(db, "carritos", user.uid), {
+      email: user.email,
+      carrito: cart,
+      actualizado: new Date()
+    });
+
+    console.log("🔥 Carrito guardado en Firestore");
+  } catch (error) {
+    console.error("Error guardando carrito:", error);
+  }
+}
+
+// ================= CARGAR CARRITO FIRESTORE =================
+async function cargarCarritoFirestore() {
+
+  if (!auth.currentUser) return;
+
+  const user = auth.currentUser;
+
+  try {
+    const docSnap = await getDoc(doc(db, "carritos", user.uid));
+
+    if (docSnap.exists()) {
+      cart = docSnap.data().carrito || [];
+      updateCart();
+      console.log("🔥 Carrito cargado desde Firestore");
+    } else {
+      cart = [];
+      updateCart();
+    }
+
+  } catch (error) {
+    console.error("Error cargando carrito:", error);
+  }
+}
 
 console.log("🔥 Firebase conectado correctamente");
 
@@ -1201,13 +1248,8 @@ onAuthStateChanged(auth, (user) => {
       </button>
     `;
 
-    // Cargar carrito del usuario
-    const carritoGuardado = localStorage.getItem("carrito_" + user.email);
-    if(carritoGuardado){
-      cart = JSON.parse(carritoGuardado);
-      updateCart();
-    }
-
+// Cargar carrito desde Firestore
+cargarCarritoFirestore();
   } else {
 
     localStorage.removeItem("usuarioActivo");
