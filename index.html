@@ -56,6 +56,22 @@ border:none;border-radius:10px;cursor:pointer;font-size:20px
   pointer-events:auto;
 }
 
+/* ================= OVERLAY CARRITO ================= */
+#cartOverlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  opacity:0;
+  pointer-events:none;
+  transition:.3s;
+  z-index:2500;
+}
+
+#cartOverlay.show{
+  opacity:1;
+  pointer-events:auto;
+}
+
 /* ================= CARRUSEL ================= */
 /* ================= CARRUSEL ================= */
 .carousel-wrapper{
@@ -578,14 +594,24 @@ function updateCart(){
 }
 
 function toggleCartPanel(){
-  const panel = document.getElementById("cartPanel");
 
-  if(panel.style.right === "0px"){
+  const panel = document.getElementById("cartPanel");
+  const overlay = document.getElementById("cartOverlay");
+
+  const abierto = panel.style.right === "0px";
+
+  if(abierto){
     panel.style.right = "-400px";
-  } else {
+    overlay.classList.remove("show");
+  }else{
     panel.style.right = "0px";
+    overlay.classList.add("show");
     renderCartPanel();
   }
+}
+
+document.getElementById("cartOverlay").onclick = function(){
+  toggleCartPanel();
 }
 
 function renderCartPanel(){
@@ -1160,6 +1186,9 @@ function cerrarModal(){
 </div>
 
 <!-- ================= PANEL CARRITO ================= -->
+
+<div id="cartOverlay"></div>
+
 <div id="cartPanel" style="
   position:fixed;
   top:0;
