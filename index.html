@@ -365,6 +365,44 @@ AQUÍ VAN LOS ICONOS QUE ME PEDISTE
 <!-- CALENDARIO -->
 <div id="calendarBox"></div>
 
+<!-- LOGIN FIREBASE -->
+<div style="
+  text-align:center;
+  margin:20px auto;
+  background:#fff;
+  padding:15px;
+  max-width:400px;
+  border-radius:16px;
+  box-shadow:0 6px 16px rgba(0,0,0,.1);
+">
+
+  <input type="email" id="email" placeholder="Correo"
+    style="padding:8px;border-radius:8px;border:1px solid #ccc;width:90%;margin-bottom:10px;">
+
+  <input type="password" id="password" placeholder="Contraseña"
+    style="padding:8px;border-radius:8px;border:1px solid #ccc;width:90%;margin-bottom:10px;">
+
+  <button onclick="registrarUsuario(
+    document.getElementById('email').value,
+    document.getElementById('password').value
+  )">
+    Registrarse
+  </button>
+
+  <button onclick="iniciarSesion(
+    document.getElementById('email').value,
+    document.getElementById('password').value
+  )">
+    Iniciar sesión
+  </button>
+
+  <button onclick="cerrarSesion()">
+    Cerrar sesión
+  </button>
+
+  <p id="estadoUsuario"></p>
+
+</div>
 
 <!-- MARCAS / CATALOGOS -->
 <div class="section" id="brandsSection"></div>
@@ -513,13 +551,16 @@ function addToCart(n,p){
 }
 
 
-function updateCart(){
+async function updateCart(){
+
   document.getElementById('cartCount').innerText = cart.length;
 
-  if(usuarioActivo){
-    localStorage.setItem(
-      "carrito_" + usuarioActivo,
-      JSON.stringify(cart)
+  const user = auth.currentUser;
+
+  if(user){
+    await setDoc(
+      doc(db, "carritos", user.uid),
+      { items: cart }
     );
   }
 }
@@ -1107,6 +1148,12 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+import {
+  doc,
+  setDoc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
 // TU CONFIG (la que Firebase te dio)
 const firebaseConfig = {
   apiKey: "AIzaSyCPGsbPF02rktL6TTlSHJ43Sxxqq6op-Qs",
@@ -1169,11 +1216,27 @@ window.cerrarSesion = async () => {
 
 
 // ================= DETECTAR SESIÓN =================
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
+
+  const estado = document.getElementById("estadoUsuario");
+
   if (user) {
-    console.log("🟢 Usuario activo:", user.email);
+
+    estado.innerHTML = "🟢 Sesión activa: <b>" + user.email + "</b>";
+
+    const docSnap = await getDoc(doc(db, "carritos", user.uid));
+
+    if (docSnap.exists()) {
+      cart = docSnap.data().items || [];
+      document.getElementById('cartCount').innerText = cart.length;
+    }
+
   } else {
-    console.log("🔴 No hay sesión activa");
+
+    estado.innerHTML = "🔴 No hay sesión activa";
+    cart = [];
+    document.getElementById('cartCount').innerText = 0;
+
   }
 });
 </script>
