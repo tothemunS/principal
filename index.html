@@ -610,6 +610,16 @@ function toggleCartPanel(){
   }
 }
 
+/* 🔥 CERRAR CARRITO AL HACER CLICK AFUERA */
+document.getElementById("cartOverlay").addEventListener("click", function(){
+  toggleCartPanel();
+});
+
+/* 🔥 EVITAR CIERRE SI HACEN CLICK DENTRO DEL PANEL */
+document.getElementById("cartPanel").addEventListener("click", function(e){
+  e.stopPropagation();
+});
+
 function renderCartPanel(){
 
   const container = document.getElementById("cartItems");
