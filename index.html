@@ -1122,6 +1122,27 @@ function cerrarModal(){
   renderMarcasEstaticas();   // Después las que faltan
 })();
 
+// ================= CIERRE AUTOMÁTICO CARRITO =================
+window.addEventListener("DOMContentLoaded", function(){
+
+  const cartOverlay = document.getElementById("cartOverlay");
+  const cartPanel = document.getElementById("cartPanel");
+
+  if(cartOverlay && cartPanel){
+
+    // Cerrar si hacen click en el fondo oscuro
+    cartOverlay.addEventListener("click", function(){
+      toggleCartPanel();
+    });
+
+    // Evitar que se cierre si hacen click dentro
+    cartPanel.addEventListener("click", function(e){
+      e.stopPropagation();
+    });
+
+  }
+
+});
 
 </script>
 
