@@ -1,5 +1,3 @@
-si se abre el carrito, el problema es que no hay cómo cerrarlo, tambien quiero que al abrirse se obscuresca el resto de la pantalla como al abrir el menu lateral de marcas::
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -596,12 +594,18 @@ function updateCart(){
 }
 
 function toggleCartPanel(){
-  const panel = document.getElementById("cartPanel");
 
-  if(panel.style.right === "0px"){
+  const panel = document.getElementById("cartPanel");
+  const overlay = document.getElementById("cartOverlay");
+
+  const abierto = panel.style.right === "0px";
+
+  if(abierto){
     panel.style.right = "-400px";
-  } else {
+    overlay.classList.remove("show");
+  }else{
     panel.style.right = "0px";
+    overlay.classList.add("show");
     renderCartPanel();
   }
 }
