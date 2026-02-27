@@ -196,6 +196,42 @@ border:none;border-radius:10px;cursor:pointer;font-size:20px
   padding:4px 6px;
 }
 
+/* ================= PANEL CARRITO ================= */
+
+#cartPanel{
+  position:fixed;
+  top:0;
+  right:-400px;
+  width:350px;
+  height:100vh;
+  background:#ffffff;
+  box-shadow:-5px 0 20px rgba(0,0,0,.2);
+  padding:20px;
+  transition:right .3s ease;
+  z-index:3000;
+  overflow-y:auto;
+}
+
+.cart-item{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:10px;
+  background:#f5f5f5;
+  padding:8px;
+  border-radius:8px;
+}
+
+.cart-send-btn{
+  width:100%;
+  padding:10px;
+  background:#2e7d32;
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  margin-top:10px;
+  cursor:pointer;
+}
+
 /* ================= CALENDARIO ================= */
 #calendarBox{
   max-width:900px;
@@ -293,6 +329,21 @@ border:none;border-radius:10px;cursor:pointer;font-size:20px
 
 .dark .carousel-item{
   background:#1e1e1e;
+}
+
+/* ===== DARK PANEL CARRITO ===== */
+
+.dark #cartPanel{
+  background:#1e1e1e;
+  color:#eee;
+}
+
+.dark .cart-item{
+  background:#2a2a2a;
+}
+
+.dark .cart-send-btn{
+  background:#43a047;
 }
 
 .fraiche-products{
@@ -1224,19 +1275,7 @@ window.addEventListener("DOMContentLoaded", function(){
 
 <div id="cartOverlay"></div>
 
-<div id="cartPanel" style="
-  position:fixed;
-  top:0;
-  right:-400px;
-  width:350px;
-  height:100%;
-  background:#fff;
-  box-shadow:-5px 0 20px rgba(0,0,0,.2);
-  transition:.3s;
-  z-index:3000;
-  padding:20px;
-  overflow-y:auto;
-">
+<div id="cartPanel">
 
   <h3>🛒 Mi carrito</h3>
 
@@ -1246,18 +1285,9 @@ window.addEventListener("DOMContentLoaded", function(){
 
   <h4>Total: $<span id="cartTotal">0</span></h4>
 
-  <button onclick="openWhatsApp()" style="
-    width:100%;
-    padding:10px;
-    background:#000;
-    color:#fff;
-    border:none;
-    border-radius:8px;
-    margin-top:10px;
-    cursor:pointer;
-  ">
-    📲 Enviar pedido
-  </button>
+  <button onclick="openWhatsApp()" class="cart-send-btn">
+  📲 Enviar pedido
+</button>
 
 </div>
 
