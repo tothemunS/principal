@@ -624,14 +624,8 @@ function renderCartPanel(){
     total += Number(item.p);
 
     container.innerHTML += `
-      <div style="
-        display:flex;
-        justify-content:space-between;
-        margin-bottom:10px;
-        background:#f5f5f5;
-        padding:8px;
-        border-radius:8px;
-      ">
+  <div class="cart-item">
+
         <div>
           ${item.n}<br>
           <b>$${item.p}</b>
