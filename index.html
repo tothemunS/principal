@@ -280,10 +280,6 @@ border:none;border-radius:10px;cursor:pointer;font-size:20px
 }
 
 /* ================= DARK MODE ================= */
-.cart-item{
-  background:#2a2a2a;
-}
-
 .dark{
   background:#111;
   color:#eee;
@@ -327,7 +323,39 @@ border:none;border-radius:10px;cursor:pointer;font-size:20px
   transition:.25s;
 }
 
+/* ================= LOGIN ================= */
 
+#loginBox{
+  text-align:center;
+  margin:20px auto;
+  background:#ffffff;
+  padding:15px;
+  max-width:400px;
+  border-radius:16px;
+  box-shadow:0 6px 16px rgba(0,0,0,.1);
+  transition:.3s;
+}
+
+#loginBox input{
+  padding:8px;
+  border-radius:8px;
+  border:1px solid #ccc;
+  width:90%;
+  margin-bottom:10px;
+  background:#fff;
+  color:#000;
+}
+
+.dark #loginBox{
+  background:#1e1e1e;
+  box-shadow:0 6px 16px rgba(0,0,0,.6);
+}
+
+.dark #loginBox input{
+  background:#2a2a2a;
+  border:1px solid #444;
+  color:#eee;
+}
 
 </style>
 </head>
@@ -389,15 +417,7 @@ AQUÍ VAN LOS ICONOS QUE ME PEDISTE
 <div id="calendarBox"></div>
 
 <!-- ================= LOGIN FIREBASE ================= -->
-<div id="loginBox" style="
-  text-align:center;
-  margin:20px auto;
-  background:#fff;
-  padding:15px;
-  max-width:400px;
-  border-radius:16px;
-  box-shadow:0 6px 16px rgba(0,0,0,.1);
-">
+<div id="loginBox">
 
   <input type="email" id="email" placeholder="Correo"
     style="padding:8px;border-radius:8px;border:1px solid #ccc;width:90%;margin-bottom:10px;">
