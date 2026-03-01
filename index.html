@@ -708,22 +708,16 @@ function toggleCartPanel(){
   const panel = document.getElementById("cartPanel");
   const overlay = document.getElementById("cartOverlay");
 
-  const esMobile = window.innerWidth <= 768;
+  const abierto = panel.style.right === "0px";
 
-  if(esMobile){
-    panel.classList.toggle("open");
+  if(abierto){
+    panel.style.right = "-400px";
+    overlay.classList.remove("show");
   }else{
-    const abierto = panel.style.right === "0px";
-
-    if(abierto){
-      panel.style.right = "-400px";
-    }else{
-      panel.style.right = "0px";
-    }
+    panel.style.right = "0px";
+    overlay.classList.add("show");
+    renderCartPanel();
   }
-
-  overlay.classList.toggle("show");
-  renderCartPanel();
 }
 
 function renderCartPanel(){
@@ -1495,89 +1489,6 @@ cargarCarritoFirestore();
 
   }
 });
-
-/* ================= MOBILE OPTIMIZATION ================= */
-@media (max-width: 768px){
-
-  /* 🔹 Ajuste general */
-  body{
-    font-size:15px;
-  }
-
-  /* 🔹 Menú lateral más ancho */
-  .side-menu{
-    width:80px;
-    left:-90px;
-  }
-
-  .side-menu img{
-    width:60px;
-  }
-
-  /* 🔹 Carrusel en modo plano */
-  .carousel-wrapper{
-    display:block;
-    height:320px;
-    margin-top:20px;
-  }
-
-  #carousel{
-    position:relative;
-    left:0;
-    top:0;
-    transform:none !important;
-    display:flex;
-    overflow-x:auto;
-    gap:15px;
-    padding:10px 20px;
-  }
-
-  .carousel-item{
-    position:relative;
-    transform:none !important;
-    width:160px;
-    height:220px;
-    margin:0;
-    flex-shrink:0;
-  }
-
-  .arrow{
-    display:none; /* quitamos flechas en móvil */
-  }
-
-  /* 🔹 Productos en 2 columnas */
-  .fraiche-products{
-    gap:12px;
-  }
-
-  .fraiche-product{
-    width:48%;
-  }
-
-  /* 🔹 Calendario más compacto */
-  #calendarBox{
-    margin:20px 10px;
-    padding:15px;
-  }
-
-  /* 🔹 Carrito pantalla completa */
-  #cartPanel{
-    width:100%;
-    right:-100%;
-  }
-
-  #cartPanel.open{
-    right:0;
-  }
-
-  /* 🔹 Botón carrito más grande */
-  #cartBtn{
-    width:60px;
-    height:60px;
-    font-size:24px;
-  }
-
-}
 
 </script>
 
