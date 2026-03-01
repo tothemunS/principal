@@ -201,15 +201,17 @@ border:none;border-radius:10px;cursor:pointer;font-size:20px
 #cartPanel{
   position:fixed;
   top:0;
-  right:-400px;
-  width:350px;
-  height:100vh;
+  right:-100%;
+  width:100%;
+  max-width:420px;
+  height:100dvh;
   background:#ffffff;
   box-shadow:-5px 0 20px rgba(0,0,0,.2);
-  padding:20px;
-  transition:right .3s ease;
+  padding:18px;
+  transition:right .35s ease;
   z-index:3000;
   overflow-y:auto;
+  border-radius:20px 0 0 20px;
 }
 
 .cart-item{
@@ -452,6 +454,61 @@ border:none;border-radius:10px;cursor:pointer;font-size:20px
   background:#1e1e1e;
   color:#4caf50;
   box-shadow:0 6px 16px rgba(0,0,0,.6);
+}
+
+/* ================= MOBILE OPTIMIZATION ================= */
+@media (max-width:768px){
+
+  .section{
+    padding:25px 14px;
+  }
+
+  .brand-block{
+    padding:16px;
+  }
+
+  .fraiche-products{
+    gap:12px;
+  }
+
+  .fraiche-product{
+    width:45%;
+  }
+
+  .fraiche-product img{
+    height:140px;
+    object-fit:contain;
+  }
+
+  .fraiche-product p{
+    font-size:13px;
+  }
+
+  #cartBtn{
+    width:58px;
+    height:58px;
+    font-size:22px;
+  }
+
+  .contador{
+    font-size:13px;
+    padding:8px 14px;
+  }
+
+}
+
+@media (max-width:768px){
+
+  .carousel-wrapper{
+    height:360px;
+  }
+
+  .carousel-item{
+    width:150px;
+    height:200px;
+    margin:-100px -75px;
+  }
+
 }
 
 </style>
@@ -713,7 +770,8 @@ function toggleCartPanel(){
   const abierto = panel.style.right === "0px";
 
   if(abierto){
-    panel.style.right = "-400px";
+panel.style.right = "-100%";
+
     overlay.classList.remove("show");
   }else{
     panel.style.right = "0px";
@@ -1505,6 +1563,18 @@ cargarCarritoFirestore();
 
   }
 });
+
+button, img, .fraiche-product{
+  -webkit-tap-highlight-color: transparent;
+}
+
+body{
+  -webkit-overflow-scrolling: touch;
+}
+
+#cartBtn:active{
+  transform:scale(.95);
+}
 
 </script>
 
