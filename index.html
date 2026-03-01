@@ -427,6 +427,28 @@ border:none;border-radius:10px;cursor:pointer;font-size:20px
   color:#eee;
 }
 
+/* ================= USER BOX ================= */
+
+#userBox{
+  display:none;
+  text-align:center;
+  margin:20px auto;
+  background:#e8f5e9;
+  padding:12px;
+  max-width:400px;
+  border-radius:16px;
+  box-shadow:0 6px 16px rgba(0,0,0,.1);
+  font-weight:bold;
+  color:#1b5e20;
+}
+
+/* 🌙 MODO OSCURO */
+.dark #userBox{
+  background:#1e1e1e;
+  color:#4caf50;
+  box-shadow:0 6px 16px rgba(0,0,0,.6);
+}
+
 </style>
 </head>
 
@@ -520,18 +542,7 @@ AQUÍ VAN LOS ICONOS QUE ME PEDISTE
 
 </div>
 
-<div id="userBox" style="
-  display:none;
-  text-align:center;
-  margin:20px auto;
-  background:#e8f5e9;
-  padding:12px;
-  max-width:400px;
-  border-radius:16px;
-  box-shadow:0 6px 16px rgba(0,0,0,.1);
-  font-weight:bold;
-">
-</div>
+<div id="userBox"></div>
 
 <!-- MARCAS / CATALOGOS -->
 <div class="section" id="brandsSection"></div>
