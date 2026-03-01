@@ -743,10 +743,18 @@ let ventasGlobales = JSON.parse(
 ) || {}; let popularidad = {};
 function addToCart(n,p){
 
-  window.cart.push({n,p});
+  p = Number(p);
+
+  const existente = window.cart.find(item => item.n === n);
+
+  if(existente){
+    existente.qty += 1;
+  } else {
+    window.cart.push({ n, p, qty: 1 });
+  }
+
   updateCart();
 
-  // 🔥 estadísticas reales
   ventasGlobales[n] = (ventasGlobales[n] || 0) + 1;
 
   localStorage.setItem(
@@ -754,7 +762,7 @@ function addToCart(n,p){
     JSON.stringify(ventasGlobales)
   );
 
-  ordenarCarruselPorPopularidad(); // actualiza el carrusel
+  ordenarCarruselPorPopularidad();
 }
 
 function updateCart(){
