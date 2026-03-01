@@ -380,6 +380,35 @@ border:none;border-radius:10px;cursor:pointer;font-size:20px
   background:#43a047;
 }
 
+/* ================= MODAL PRODUCTO ================= */
+
+.modal-content{
+  background:#ffffff;
+  border-radius:20px;
+  padding:25px;
+  max-width:420px;
+  width:90%;
+  text-align:center;
+  transition:.3s;
+}
+
+.dark .modal-content{
+  background:#1e1e1e;
+  color:#eee;
+}
+
+.modal-content img{
+  background:#fff;
+  border-radius:12px;
+  padding:8px;
+  transition:.3s;
+}
+
+.dark .modal-content img{
+  background:#1e1e1e;
+  filter: brightness(.9) contrast(1.05);
+}
+
 .fraiche-products{
   display:flex;
   gap:20px;
@@ -1387,15 +1416,7 @@ document.addEventListener("click", function(e){
 
 
 <!-- ================= MODAL PRODUCTO ================= -->
-<div id="productModal" style="
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.7);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:2000;
-">
+<div id="productModal" class="modal">
 
   <div style="
     background:#fff;
