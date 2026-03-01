@@ -735,8 +735,17 @@ const pb = ventasGlobales[b.dataset.name] || 0;
 }
 
 
-/* ================= CARRITO ================= */
+// CARRITO SIMPLE
 window.cart = [];
+
+document.getElementById("cartPanel").addEventListener("click", function(e){
+  e.stopPropagation();
+});
+
+document.getElementById("cartOverlay").addEventListener("click", function(){
+  toggleCartPanel();
+});
+
 let usuarioActivo = localStorage.getItem("usuarioActivo") || null;
 let ventasGlobales = JSON.parse(
   localStorage.getItem("ventasGlobales")
