@@ -333,6 +333,14 @@ border:none;border-radius:10px;cursor:pointer;font-size:20px
   background:#1e1e1e;
 }
 
+/* IMAGENES COMPATIBLES CON DARK MODE */
+.dark .carousel-item img,
+.dark .fraiche-product img,
+.dark .side-menu img{
+  background:#1e1e1e;
+  filter: brightness(.9) contrast(1.05);
+}
+
 .dark #calendarBox{
   background:#1e1e1e;
   color:#eee;
@@ -504,6 +512,10 @@ border:none;border-radius:10px;cursor:pointer;font-size:20px
 
 button, img, .fraiche-product{
   -webkit-tap-highlight-color: transparent;
+}
+
+img{
+  transition: filter .3s ease, background .3s ease;
 }
 
 body{
