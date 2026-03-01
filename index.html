@@ -873,7 +873,7 @@ function openWhatsApp(){
  let total = window.cart.reduce((s,i)=>s+Number(i.p),0);
 
 let txt = window.cart.map(i =>
-   `• ${i.n} — $${i.p}`
+   `• ${i.n} x${i.qty} — $${i.p * i.qty}`
  ).join('%0A');
 
  const mensaje =
