@@ -350,6 +350,11 @@ border:none;border-radius:10px;cursor:pointer;font-size:20px
   color:#666;
 }
 
+.dark .miniCalendar td.nextTuesday{
+  background:#2e7d32;
+  color:#fff;
+}
+
 /* ===== DARK PANEL CARRITO ===== */
 
 .dark #cartPanel{
@@ -818,19 +823,22 @@ function buildCalendar(){
  const now = new Date();
  const y = now.getFullYear();
  const m = now.getMonth();
-let first = new Date(y,m,1).getDay();
-first = (first === 0) ? 6 : first - 1;
+
+ let first = new Date(y,m,1).getDay();
+ first = (first === 0) ? 6 : first - 1;
+
  const days = new Date(y,m+1,0).getDate();
 
- // Calcular próximo martes
+ // Próximo martes
  let nextTuesday = new Date(now);
  while(nextTuesday.getDay() !== 2){
    nextTuesday.setDate(nextTuesday.getDate() + 1);
  }
+ nextTuesday.setHours(0,0,0,0);
 
  let html = `<table class="miniCalendar"><tr>`;
-const wd=['L','M','M','J','V','S','D'];
-wd.forEach(d=>html+=`<th>${d}</th>`);
+ const wd=['L','M','M','J','V','S','D'];
+ wd.forEach(d=>html+=`<th>${d}</th>`);
  html+='</tr><tr>';
 
  for(let i=0;i<first;i++) html+='<td></td>';
@@ -838,29 +846,27 @@ wd.forEach(d=>html+=`<th>${d}</th>`);
  for(let d=1; d<=days; d++){
 
    const fecha = new Date(y,m,d);
-   let clase = "";
+   fecha.setHours(0,0,0,0);
 
-   const esHoy = d === now.getDate();
-   const esMartes = fecha.getDay() === 2;
+   let clases = [];
 
-   if(esHoy){
-     clase = "today";
+   if(d === now.getDate()){
+     clases.push("today");
    }
 
-   if(esMartes){
-     if(
-       fecha.getDate() === nextTuesday.getDate() &&
-       fecha.getMonth() === nextTuesday.getMonth()
-     ){
-       clase = "nextTuesday";
-     }else if(fecha < nextTuesday){
-       clase = "pastTuesday";
+   if(fecha.getDay() === 2){
+
+     if(fecha.getTime() === nextTuesday.getTime()){
+       clases.push("nextTuesday");
+     }
+     else if(fecha < nextTuesday){
+       clases.push("pastTuesday");
      }
    }
 
-   html += `<td class='${clase}'>${d}</td>`;
+   html += `<td class="${clases.join(" ")}">${d}</td>`;
 
-if((first + d) % 7 === 0) html+='</tr><tr>';
+   if((first + d) % 7 === 0) html+='</tr><tr>';
  }
 
  html+='</tr></table>';
