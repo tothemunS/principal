@@ -1315,7 +1315,21 @@ window.addEventListener("DOMContentLoaded", function(){
 
 <div id="cartPanel">
 
-  <h3>🛒 Mi carrito</h3>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;">
+    
+    <h3 style="margin:0;">🛒 Mi carrito</h3>
+
+    <button onclick="toggleCartPanel()" 
+      style="
+        background:none;
+        border:none;
+        font-size:22px;
+        cursor:pointer;
+      ">
+      ✖
+    </button>
+
+  </div>
 
   <div id="cartItems"></div>
 
@@ -1324,8 +1338,8 @@ window.addEventListener("DOMContentLoaded", function(){
   <h4>Total: $<span id="cartTotal">0</span></h4>
 
   <button onclick="openWhatsApp()" class="cart-send-btn">
-  📲 Enviar pedido
-</button>
+    📲 Enviar pedido
+  </button>
 
 </div>
 
