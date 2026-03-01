@@ -201,15 +201,17 @@ border:none;border-radius:10px;cursor:pointer;font-size:20px
 #cartPanel{
   position:fixed;
   top:0;
-  right:-400px;
-  width:350px;
-  height:100vh;
+  right:-100%;
+  width:100%;
+  max-width:420px;
+  height:100dvh;
   background:#ffffff;
   box-shadow:-5px 0 20px rgba(0,0,0,.2);
   padding:20px;
   transition:right .3s ease;
   z-index:3000;
   overflow-y:auto;
+  box-sizing:border-box;
 }
 
 .cart-item{
@@ -771,7 +773,7 @@ function toggleCartPanel(){
   const abierto = panel.style.right === "0px";
 
   if(abierto){
-    panel.style.right = "-400px";
+panel.style.right = "-100%";
     overlay.classList.remove("show");
   }else{
     panel.style.right = "0px";
