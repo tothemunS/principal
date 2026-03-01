@@ -852,6 +852,20 @@ function removeFromCart(index){
   renderCartPanel();
 }
 
+function changeQty(index, delta){
+
+  const item = window.cart[index];
+
+  item.qty += delta;
+
+  if(item.qty <= 0){
+    window.cart.splice(index,1);
+  }
+
+  updateCart();
+  renderCartPanel();
+}
+
 function openWhatsApp(){
 
  const numero = "525632753493"; // ← TU NUMERO AQUI
