@@ -454,6 +454,52 @@ border:none;border-radius:10px;cursor:pointer;font-size:20px
   box-shadow:0 6px 16px rgba(0,0,0,.6);
 }
 
+/* ================= MOBILE OPTIMIZATION ================= */
+@media (max-width:768px){
+
+  .section{
+    padding:25px 14px;
+  }
+
+  .brand-block{
+    padding:16px;
+  }
+
+  .fraiche-products{
+    gap:12px;
+  }
+
+  .fraiche-product{
+    width:45%;
+  }
+
+  .fraiche-product img{
+    height:140px;
+    object-fit:contain;
+  }
+
+  #cartBtn{
+    width:58px;
+    height:58px;
+    font-size:22px;
+  }
+
+  .contador{
+    font-size:13px;
+    padding:8px 14px;
+  }
+
+  .side-menu{
+    width:220px;
+    left:-240px;
+  }
+
+  .side-menu img{
+    width:120px;
+  }
+
+}
+
 </style>
 </head>
 
@@ -1505,6 +1551,8 @@ cargarCarritoFirestore();
 
   }
 });
+
+
 
 </script>
 
