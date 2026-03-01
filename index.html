@@ -382,6 +382,16 @@ border:none;border-radius:10px;cursor:pointer;font-size:20px
 
 /* ================= MODAL PRODUCTO ================= */
 
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.7);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:4000;
+}
+
 .modal-content{
   background:#ffffff;
   border-radius:20px;
@@ -389,7 +399,6 @@ border:none;border-radius:10px;cursor:pointer;font-size:20px
   max-width:420px;
   width:90%;
   text-align:center;
-  transition:.3s;
 }
 
 .dark .modal-content{
@@ -398,10 +407,11 @@ border:none;border-radius:10px;cursor:pointer;font-size:20px
 }
 
 .modal-content img{
+  width:200px;
+  object-fit:contain;
   background:#fff;
   border-radius:12px;
   padding:8px;
-  transition:.3s;
 }
 
 .dark .modal-content img{
@@ -654,6 +664,35 @@ AQUÍ VAN LOS ICONOS QUE ME PEDISTE
 
 <!-- MARCAS / CATALOGOS -->
 <div class="section" id="brandsSection"></div>
+
+<!-- ================= MODAL PRODUCTO ================= -->
+<div id="productModal" class="modal">
+
+  <div class="modal-content">
+
+    <img id="modalImg" src="" alt="Producto">
+
+    <h3 id="modalNombre"></h3>
+
+    <p id="modalPrecio"></p>
+
+    <p id="modalDescripcion"></p>
+
+    <button id="modalAddBtn"
+      style="padding:8px 14px;border:none;border-radius:8px;background:#2e7d32;color:#fff;margin-top:10px;">
+      Agregar al carrito
+    </button>
+
+    <br><br>
+
+    <button onclick="cerrarModal()"
+      style="padding:6px 12px;border:none;border-radius:8px;background:#999;color:#fff;">
+      Cerrar
+    </button>
+
+  </div>
+
+</div>
 
 <script>
 
@@ -1416,7 +1455,15 @@ document.addEventListener("click", function(e){
 
 
 <!-- ================= MODAL PRODUCTO ================= -->
-<div id="productModal" class="modal">
+<div id="productModal" style="
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.7);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:2000;
+">
 
   <div style="
     background:#fff;
