@@ -735,21 +735,32 @@ const pb = ventasGlobales[b.dataset.name] || 0;
 }
 
 
-// CARRITO SIMPLE
+/* ================= CARRITO ================= */
 window.cart = [];
-
-document.getElementById("cartPanel").addEventListener("click", function(e){
-  e.stopPropagation();
-});
-
-document.getElementById("cartOverlay").addEventListener("click", function(){
-  toggleCartPanel();
-});
-
 let usuarioActivo = localStorage.getItem("usuarioActivo") || null;
 let ventasGlobales = JSON.parse(
   localStorage.getItem("ventasGlobales")
 ) || {}; let popularidad = {};
+
+document.addEventListener("DOMContentLoaded", function(){
+
+  const panel = document.getElementById("cartPanel");
+  const overlay = document.getElementById("cartOverlay");
+
+  if(panel){
+    panel.addEventListener("click", function(e){
+      e.stopPropagation();
+    });
+  }
+
+  if(overlay){
+    overlay.addEventListener("click", function(){
+      toggleCartPanel();
+    });
+  }
+
+});
+
 function addToCart(n,p){
 
   p = Number(p);
