@@ -743,10 +743,18 @@ let ventasGlobales = JSON.parse(
 ) || {}; let popularidad = {};
 function addToCart(n,p){
 
-  window.cart.push({n,p});
+  p = Number(p);
+
+  const existente = window.cart.find(item => item.n === n);
+
+  if(existente){
+    existente.qty += 1;
+  } else {
+    window.cart.push({ n, p, qty: 1 });
+  }
+
   updateCart();
 
-  // 🔥 estadísticas reales
   ventasGlobales[n] = (ventasGlobales[n] || 0) + 1;
 
   localStorage.setItem(
@@ -754,7 +762,7 @@ function addToCart(n,p){
     JSON.stringify(ventasGlobales)
   );
 
-  ordenarCarruselPorPopularidad(); // actualiza el carrusel
+  ordenarCarruselPorPopularidad();
 }
 
 function updateCart(){
@@ -791,19 +799,49 @@ function renderCartPanel(){
 
   let total = 0;
 
-  window.cart.forEach((item, index) => {
+window.cart.forEach((item, index) => {
 
-    total += Number(item.p);
+  const subtotal = item.p * item.qty;
+  total += subtotal;
 
-    container.innerHTML += `
-  <div class="cart-item">
+  container.innerHTML += `
+    <div class="cart-item">
 
-        <div>
-          ${item.n}<br>
-          <b>$${item.p}</b>
+      <div style="flex:1;">
+        ${item.n}<br>
+        <b>$${item.p}</b><br>
+
+        <div style="margin-top:6px; display:flex; align-items:center; gap:6px;">
+
+          <button onclick="changeQty(${index}, -1)" 
+            style="background:#000;color:#fff;border:none;border-radius:4px;padding:2px 6px;">
+            −
+          </button>
+
+          <span><b>${item.qty}</b></span>
+
+          <button onclick="changeQty(${index}, 1)" 
+            style="background:#000;color:#fff;border:none;border-radius:4px;padding:2px 6px;">
+            +
+          </button>
+
         </div>
 
-        <button onclick="removeFromCart(${index})" style="
+        <div style="margin-top:4px;">
+          Subtotal: <b>$${subtotal}</b>
+        </div>
+      </div>
+
+      <button onclick="removeFromCart(${index})"
+        style="background:red;color:#fff;border:none;border-radius:6px;cursor:pointer;padding:4px 6px;">
+        ✖
+      </button>
+
+    </div>
+  `;
+}); 
+
+ style="
           background:red;
           color:#fff;
           border:none;
@@ -826,6 +864,21 @@ function removeFromCart(index){
   renderCartPanel();
 }
 
+function changeQty(index, delta){
+
+  const item = window.cart[index];
+
+  item.qty += delta;
+
+  if(item.qty <= 0){
+    window.cart.splice(index,1);
+  }
+
+  updateCart();
+  renderCartPanel();
+}
+
+
 function openWhatsApp(){
 
  const numero = "525632753493"; // ← TU NUMERO AQUI
@@ -833,7 +886,7 @@ function openWhatsApp(){
  let total = window.cart.reduce((s,i)=>s+Number(i.p),0);
 
 let txt = window.cart.map(i =>
-   `• ${i.n} — $${i.p}`
+   `• ${i.n} x${i.qty} — $${i.p * i.qty}`
  ).join('%0A');
 
  const mensaje =
