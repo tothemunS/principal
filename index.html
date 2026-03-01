@@ -461,7 +461,7 @@ border:none;border-radius:10px;cursor:pointer;font-size:20px
 
 <div id="overlay"></div>
 
-<div id="cartOverlay" onclick="toggleCartPanel()"></div>
+<div id="cartOverlay"></div>
 
 <!-- MENU LATERAL -->
 <div class="menu-toggle" onclick="toggleMenu()">➤</div>
@@ -1229,24 +1229,24 @@ function cerrarModal(){
   renderMarcasEstaticas();   // Después las que faltan
 })();
 
-// ================= CIERRE AUTOMÁTICO CARRITO =================
-window.addEventListener("DOMContentLoaded", function(){
+// ================= CIERRE AL HACER CLICK FUERA =================
 
-  const cartOverlay = document.getElementById("cartOverlay");
+document.addEventListener("click", function(e){
+
   const cartPanel = document.getElementById("cartPanel");
+  const cartBtn   = document.getElementById("cartBtn");
+  const overlay   = document.getElementById("cartOverlay");
 
-  if(cartOverlay && cartPanel){
+  const abierto = cartPanel.style.right === "0px";
 
-    // Cerrar si hacen click en el fondo oscuro
-    cartOverlay.addEventListener("click", function(){
-      toggleCartPanel();
-    });
+  if(!abierto) return;
 
-    // Evitar que se cierre si hacen click dentro
-    cartPanel.addEventListener("click", function(e){
-      e.stopPropagation();
-    });
+  const clickDentroPanel = cartPanel.contains(e.target);
+  const clickEnBoton     = cartBtn.contains(e.target);
 
+  if(!clickDentroPanel && !clickEnBoton){
+    cartPanel.style.right = "-400px";
+    overlay.classList.remove("show");
   }
 
 });
