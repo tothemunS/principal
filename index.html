@@ -678,6 +678,22 @@ AQUÍ VAN LOS ICONOS QUE ME PEDISTE
 
     <p id="modalDescripcion"></p>
 
+<div style="margin-top:12px; display:flex; align-items:center; justify-content:center; gap:10px;">
+
+  <button onclick="cambiarCantidadModal(-1)"
+    style="background:#000;color:#fff;border:none;border-radius:6px;padding:6px 10px;">
+    −
+  </button>
+
+  <span id="modalQty" style="font-size:18px;font-weight:bold;">1</span>
+
+  <button onclick="cambiarCantidadModal(1)"
+    style="background:#000;color:#fff;border:none;border-radius:6px;padding:6px 10px;">
+    +
+  </button>
+
+</div>
+
     <button id="modalAddBtn"
       style="padding:8px 14px;border:none;border-radius:8px;background:#2e7d32;color:#fff;margin-top:10px;">
       Agregar al carrito
@@ -841,21 +857,22 @@ document.addEventListener("DOMContentLoaded", function(){
 
 });
 
-function addToCart(n,p){
+function addToCart(n, p, cantidad = 1){
 
   p = Number(p);
+  cantidad = Number(cantidad);
 
   const existente = window.cart.find(item => item.n === n);
 
   if(existente){
-    existente.qty += 1;
+    existente.qty += cantidad;
   } else {
-    window.cart.push({ n, p, qty: 1 });
+    window.cart.push({ n, p, qty: cantidad });
   }
 
   updateCart();
 
-  ventasGlobales[n] = (ventasGlobales[n] || 0) + 1;
+  ventasGlobales[n] = (ventasGlobales[n] || 0) + cantidad;
 
   localStorage.setItem(
     "ventasGlobales",
@@ -1407,12 +1424,20 @@ function abrirModalProducto(marca, nombre, precio){
   document.getElementById("modalNombre").innerText = nombre;
   document.getElementById("modalPrecio").innerText = "$" + precio;
 
-  // descripción automática básica
   document.getElementById("modalDescripcion").innerText =
     `Producto original de ${marca}. Ideal para uso personal o regalo.`;
 
+  // 🔥 reiniciar cantidad a 1 cada vez que se abre
+  document.getElementById("modalQty").innerText = 1;
+
   document.getElementById("modalAddBtn").onclick = function(){
-    addToCart(nombre, precio);
+
+    const qty = Number(
+      document.getElementById("modalQty").innerText
+    );
+
+    addToCart(nombre, precio, qty);
+
     cerrarModal();
   };
 
@@ -1421,6 +1446,18 @@ function abrirModalProducto(marca, nombre, precio){
 
 function cerrarModal(){
   document.getElementById("productModal").style.display = "none";
+}
+
+function cambiarCantidadModal(delta){
+
+  const qtySpan = document.getElementById("modalQty");
+  let actual = Number(qtySpan.innerText);
+
+  actual += delta;
+
+  if(actual < 1) actual = 1;
+
+  qtySpan.innerText = actual;
 }
 
 
